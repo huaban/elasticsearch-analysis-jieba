@@ -1,0 +1,23 @@
+.idea/
+.gradle/
+*.iml
+work/
+/data/
+logs/
+.DS_Store
+build/
+target/
+
+
+## eclipse ignores (use 'gradle eclipse' to build eclipse projects)
+.project
+.classpath
+.settings
+*/.project
+*/.classpath
+*/.settings
+*/eclipse-build
+
+## netbeans ignores
+nb-configuration.xml
+nbactions.xml
