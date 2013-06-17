@@ -10,7 +10,7 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
 
-public class JiebaTokenizer extends TokenFilter {
+public final class JiebaTokenizer extends TokenFilter {
   
   JiebaSegmenter segmenter;
   
