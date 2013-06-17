@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.elasticsearch.index.analysis.Utility;
 import org.junit.Test;
 
 import com.alibaba.fastjson.JSONArray;

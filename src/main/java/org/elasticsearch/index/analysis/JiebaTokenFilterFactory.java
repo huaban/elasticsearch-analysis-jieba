@@ -1,19 +1,20 @@
 package org.elasticsearch.index.analysis;
 
-import org.apache.lucene.analysis.Analyzer;
+
+import org.apache.lucene.analysis.TokenStream;
 import org.elasticsearch.common.logging.ESLogger;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.index.Index;
 
-import java.io.Reader;
-
-public class JiebaAnalyzer extends Analyzer {
-	private final ESLogger log = Loggers.getLogger(JiebaAnalyzer.class);
+public class JiebaTokenFilterFactory extends AbstractTokenFilterFactory {
+	private final ESLogger log = Loggers.getLogger(JiebaTokenFilterFactory.class);
 
 	private StringBuilder sb;
 
-	public JiebaAnalyzer(Settings settings) {
-		super();
+	public JiebaTokenFilterFactory(Index index, Settings indexSettings,
+			String name, Settings settings) {
+		super(index, indexSettings, name, settings);
 		String url = settings.get("url");
 		if (null == url)
 			throw new IllegalArgumentException("url is null!");
@@ -26,8 +27,8 @@ public class JiebaAnalyzer extends Analyzer {
 	}
 
 	@Override
-	protected TokenStreamComponents createComponents(String fieldName,
-			Reader reader) {
-		return new TokenStreamComponents(new JiebaTokenizer(this.sb.toString(), reader));
+	public TokenStream create(TokenStream input) {
+		return new JiebaTokenFilter(this.sb.toString(), input);
 	}
+
 }

@@ -1,4 +1,4 @@
-package org.elasticsearch.plugin.analysis.jieba;
+package org.elasticsearch.index.analysis;
 
 import java.io.IOException;
 import java.util.ArrayList;

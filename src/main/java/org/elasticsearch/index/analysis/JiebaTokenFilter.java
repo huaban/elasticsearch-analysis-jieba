@@ -1,4 +1,4 @@
-package org.elasticsearch.plugin.analysis.jieba;
+package org.elasticsearch.index.analysis;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -9,7 +9,7 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
 
-public final class JiebaTokenizer extends TokenFilter {
+public final class JiebaTokenFilter extends TokenFilter {
   
   JiebaSegmenter segmenter;
   
@@ -18,7 +18,7 @@ public final class JiebaTokenizer extends TokenFilter {
     
   private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
     
-  public JiebaTokenizer(String url, TokenStream input) {
+  public JiebaTokenFilter(String url, TokenStream input) {
     super(input);
     segmenter = new JiebaSegmenter(url);
   }
