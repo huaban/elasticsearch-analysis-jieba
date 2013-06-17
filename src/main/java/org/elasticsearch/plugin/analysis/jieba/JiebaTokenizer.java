@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -22,7 +21,6 @@ public class JiebaTokenizer extends TokenFilter {
   public JiebaTokenizer(String url, TokenStream input) {
     super(input);
     segmenter = new JiebaSegmenter(url);
-    
   }
 
   

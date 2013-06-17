@@ -18,18 +18,6 @@ public class JiebaAnalyzerProvider extends AbstractIndexAnalyzerProvider<JiebaAn
     analyzer = new JiebaAnalyzer(settings);
   }
 
-  public JiebaAnalyzerProvider(Index index, Settings indexSettings, String name, Settings settings) {
-    super(index, indexSettings, name, settings);
-    analyzer = new JiebaAnalyzer(settings);
-  }
-
-  public JiebaAnalyzerProvider(Index index, Settings indexSettings, String prefixSettings,
-      String name, Settings settings) {
-    super(index, indexSettings, prefixSettings, name, settings);
-    analyzer = new JiebaAnalyzer(settings);
-  }
-
-
   @Override
   public JiebaAnalyzer get() {
     return this.analyzer;
