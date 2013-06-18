@@ -27,7 +27,6 @@ public final class JiebaTokenFilter extends TokenFilter {
   @Override
   public boolean incrementToken() throws IOException {
     if (tokenIter == null || !tokenIter.hasNext()) {
-      // there are no remaining tokens from the current sentence... are there more sentences?
       if (input.incrementToken()) {
 
         tokenBuffer = segmenter.segmentSentence(termAtt.toString());

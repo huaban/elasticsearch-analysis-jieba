@@ -17,7 +17,7 @@ public class JiebaTokenFilterFactory extends AbstractTokenFilterFactory {
 	public JiebaTokenFilterFactory(Index index, Settings indexSettings,
 			String name, Settings settings) {
 		super(index, indexSettings, name, settings);
-		String url = settings.get("url");
+		String url = settings.get("url", "http://183.136.223.174:8000/_segment");
 		if (null == url)
 			throw new IllegalArgumentException("url is null!");
 		log.info("url:{}", url);

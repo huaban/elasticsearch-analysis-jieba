@@ -14,7 +14,7 @@ public class JiebaAnalyzer extends Analyzer {
 
 	public JiebaAnalyzer(Settings settings) {
 		super();
-		String url = settings.get("url");
+		String url = settings.get("url", "http://183.136.223.174:8000/_segment");
 		if (null == url)
 			throw new IllegalArgumentException("url is null!");
 		log.info("url:{}", url);
