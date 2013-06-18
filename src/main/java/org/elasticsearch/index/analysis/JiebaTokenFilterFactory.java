@@ -2,6 +2,7 @@ package org.elasticsearch.index.analysis;
 
 
 import org.apache.lucene.analysis.TokenStream;
+import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.logging.ESLogger;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.settings.Settings;
@@ -12,6 +13,7 @@ public class JiebaTokenFilterFactory extends AbstractTokenFilterFactory {
 
 	private StringBuilder sb;
 
+	@Inject
 	public JiebaTokenFilterFactory(Index index, Settings indexSettings,
 			String name, Settings settings) {
 		super(index, indexSettings, name, settings);

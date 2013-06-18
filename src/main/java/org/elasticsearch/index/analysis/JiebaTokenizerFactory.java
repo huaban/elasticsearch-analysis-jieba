@@ -3,6 +3,7 @@ package org.elasticsearch.index.analysis;
 import java.io.Reader;
 
 import org.apache.lucene.analysis.Tokenizer;
+import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.logging.ESLogger;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.settings.Settings;
@@ -13,6 +14,7 @@ public class JiebaTokenizerFactory extends AbstractTokenizerFactory {
 
 	private StringBuilder sb;
 	
+	@Inject
 	public JiebaTokenizerFactory(Index index, Settings indexSettings,
 			String name, Settings settings) {
 		super(index, indexSettings, name, settings);
