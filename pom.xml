@@ -53,13 +53,14 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>1.1.31</version>
+			<scope>compile</scope>
 		</dependency>
-		
+
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.16</version>
-			<scope>runtime</scope>
+			<groupId>com.huaban</groupId>
+			<artifactId>thrift-connection-pool</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<dependency>

@@ -22,6 +22,11 @@ public final class JiebaTokenFilter extends TokenFilter {
     super(input);
     segmenter = new JiebaSegmenter(url);
   }
+  
+  public JiebaTokenFilter(String ip, Integer port, String type, TokenStream input) {
+    super(input);
+    segmenter = new JiebaSegmenter(ip, port, type);
+  }  
 
   
   @Override
@@ -29,7 +34,7 @@ public final class JiebaTokenFilter extends TokenFilter {
     if (tokenIter == null || !tokenIter.hasNext()) {
       if (input.incrementToken()) {
 
-        tokenBuffer = segmenter.segmentSentence(termAtt.toString());
+        tokenBuffer = segmenter.segmentWithThrift(termAtt.toString());
         tokenIter = tokenBuffer.iterator();
 
         if (!tokenIter.hasNext())

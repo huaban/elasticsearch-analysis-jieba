@@ -13,7 +13,7 @@ public class JiebaTokenizerTest {
 
     @Test
     public void test() throws IOException {
-        Tokenizer tokenizer = new JiebaTokenizer("http://183.136.223.174:8000/_segment", new StringReader("中华人民共和国"));
+        Tokenizer tokenizer = new JiebaTokenizer("127.0.0.1", 8000, "pos", new StringReader("中华人民共和国"));
         while(tokenizer.incrementToken() == true) {
             CharTermAttribute termAtt = tokenizer.getAttribute(CharTermAttribute.class);
             System.out.println(String.format("term:%s", termAtt.toString()));

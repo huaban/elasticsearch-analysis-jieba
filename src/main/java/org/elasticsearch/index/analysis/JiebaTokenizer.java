@@ -23,6 +23,12 @@ public final class JiebaTokenizer extends Tokenizer {
         sb = new StringBuffer();
         segmenter = new JiebaSegmenter(url);
     }
+    
+    public JiebaTokenizer(String ip, Integer port, String type, Reader input) {
+        super(input);
+        sb = new StringBuffer();
+        segmenter = new JiebaSegmenter(ip, port, type);
+    }    
 
     @Override
     public boolean incrementToken() throws IOException {
@@ -33,7 +39,7 @@ public final class JiebaTokenizer extends Tokenizer {
                 sb.append(buffer, 0, len);
             }
 
-            tokenBuffer = segmenter.segmentSentence(sb.toString());
+            tokenBuffer = segmenter.segmentWithThrift(sb.toString());
             tokenIter = tokenBuffer.iterator();
         }
         if (!tokenIter.hasNext()) return false;

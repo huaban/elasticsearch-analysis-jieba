@@ -9,16 +9,42 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.framework.TestCase;
+
+import org.apache.thrift.TException;
 import org.elasticsearch.index.analysis.Utility;
 import org.junit.Test;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.DefaultJSONParser;
+import com.huaban.segment.HubanSegmentClient;
+import com.huaban.thrift.ConnectionManager;
+import com.huaban.thrift.ConnectionProvider;
+import com.huaban.thrift.GenericConnectionProvider;
 
-public class JiebaSegmenterTest {
+public class JiebaSegmenterTest extends TestCase {
 
-	@Test
+    private String type;
+    private String url;
+    private HubanSegmentClient client;
+    private ConnectionManager connManager;
+    private ConnectionProvider connProvider;
+    
+    
+	@Override
+    protected void setUp() throws Exception {
+	    try {
+            connProvider = new GenericConnectionProvider("127.0.0.1", 8000, 1000);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }	
+	    connManager = new ConnectionManager();
+	    connManager.setConnectionProvider(connProvider);
+	    client = new HubanSegmentClient(connManager);
+    }
+
+    @Test
 	public void test() throws Exception {
 
 		String output = Utility.restPost("http://183.136.223.174:8000/_segment?type=all", "hello,world".getBytes());
@@ -36,8 +62,8 @@ public class JiebaSegmenterTest {
 
 	}
 	
-	public void jieba(String line) throws IOException {
-	    		String output = Utility.restPost("http://127.0.0.1:8000/_segment?type=all", line.getBytes());
+	public void jieba(String line) throws IOException, TException {
+	    String output = client.segment("all", line);
 		if (null != output && output.length() > 0) {
 			DefaultJSONParser parser = new DefaultJSONParser(output);
 			JSONArray array = (JSONArray) parser.parse();
@@ -48,10 +74,14 @@ public class JiebaSegmenterTest {
 			}
 		}
 	}
+	
+	public void test_jieba_thrift(String line) throws IOException {
+	    
+	}
 
     
     @Test
-    public void test_speed() throws IOException {
+    public void test_speed() throws IOException, TException {
         File file = new File("/home/matrix/Downloads/pins.json");
         BufferedReader br = new BufferedReader(new FileReader(file));
         long start = System.currentTimeMillis();
