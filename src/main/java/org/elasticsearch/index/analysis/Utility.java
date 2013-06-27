@@ -15,19 +15,19 @@ public class Utility {
 	/**
 	 * REST请求POST方法
 	 * 
-	 * @param strUrl
+	 * @param url
 	 *            请求的资源地址
 	 * @param value
 	 *            请求的POST数据
 	 * @return string
 	 * @throws IOException
 	 */
-	public static String restPost(String strUrl, byte[] value) throws IOException {
-		if ("".equals(strUrl))
-			return "0";
-		URL url = new URL(strUrl);
+	public static String restPost(String url, byte[] value) throws IOException {
+	    if (null == url || url.isEmpty()) {
+	        throw new IllegalArgumentException("Invalid Url [empty or null]");
+	    }
 		// 实例一个http资源链接
-		HttpURLConnection urlconn = (HttpURLConnection) url.openConnection();
+		HttpURLConnection urlconn = (HttpURLConnection) new URL(url).openConnection();
 		// 设置链接的属性
 		urlconn.setRequestMethod("POST");
 		urlconn.setDoOutput(true);
@@ -56,7 +56,6 @@ public class Utility {
 		bufferedReader.close();
 		urlconn.disconnect();
 		return stringBuilder.toString();
-
 	}
 
 	/**

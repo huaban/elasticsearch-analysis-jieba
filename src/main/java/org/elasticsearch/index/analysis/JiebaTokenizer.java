@@ -39,7 +39,7 @@ public final class JiebaTokenizer extends Tokenizer {
                 sb.append(buffer, 0, len);
             }
 
-            tokenBuffer = segmenter.segmentWithThrift(sb.toString());
+            tokenBuffer = segmenter.segmentSentence(sb.toString());
             tokenIter = tokenBuffer.iterator();
         }
         if (!tokenIter.hasNext()) return false;

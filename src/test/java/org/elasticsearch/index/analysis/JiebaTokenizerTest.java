@@ -2,6 +2,9 @@ package org.elasticsearch.index.analysis;
 
 import static org.junit.Assert.*;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
 
@@ -13,7 +16,7 @@ public class JiebaTokenizerTest {
 
     @Test
     public void test() throws IOException {
-        Tokenizer tokenizer = new JiebaTokenizer("127.0.0.1", 8000, "pos", new StringReader("中华人民共和国"));
+        Tokenizer tokenizer = new JiebaTokenizer("127.0.0.1", 8000, "all", new StringReader("中华人民共和国"));
         while(tokenizer.incrementToken() == true) {
             CharTermAttribute termAtt = tokenizer.getAttribute(CharTermAttribute.class);
             System.out.println(String.format("term:%s", termAtt.toString()));
@@ -24,7 +27,28 @@ public class JiebaTokenizerTest {
             CharTermAttribute termAtt = tokenizer.getAttribute(CharTermAttribute.class);
             System.out.println(String.format("term:%s", termAtt.toString()));
         }
-        
+    }
+    
+    Tokenizer tokenizer = new JiebaTokenizer("127.0.0.1", 8000, "all", new StringReader("中华人民共和国"));
+    
+    
+    @Test
+    public void test_segment_speed() throws IOException {
+        File file = new File("/home/matrix/Downloads/pins.json");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        long start = System.currentTimeMillis();
+        while (br.ready()) {
+            String line = br.readLine();
+            tokenizer.setReader(new StringReader(line));
+            tokenizer.reset();
+            while(tokenizer.incrementToken() == true) {
+                CharTermAttribute termAtt = tokenizer.getAttribute(CharTermAttribute.class);
+            }
+        }
+        br.close();
+        long elapsed = (System.currentTimeMillis() - start);
+        System.out.println(String.format("time escape:%d, rate:%fkb/s", elapsed, (file.length() * 1.0)/1000.0f/(elapsed*1.0/1000.0f)));
+
     }
 
 }

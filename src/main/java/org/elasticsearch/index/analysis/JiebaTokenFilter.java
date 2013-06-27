@@ -34,7 +34,7 @@ public final class JiebaTokenFilter extends TokenFilter {
     if (tokenIter == null || !tokenIter.hasNext()) {
       if (input.incrementToken()) {
 
-        tokenBuffer = segmenter.segmentWithThrift(termAtt.toString());
+        tokenBuffer = segmenter.segmentSentence(termAtt.toString());
         tokenIter = tokenBuffer.iterator();
 
         if (!tokenIter.hasNext())
