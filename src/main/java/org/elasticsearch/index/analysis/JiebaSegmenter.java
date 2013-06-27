@@ -1,6 +1,7 @@
 package org.elasticsearch.index.analysis;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,12 +22,12 @@ public class JiebaSegmenter {
 	}
 	
 
-	public List<String> segmentSentence(String sentence) {
+	public List<String> segmentSentence(Reader input) {
 		List<String> result = Collections.emptyList();
 
 		String output = null;
 		try {
-			output = Utility.restPost(this.url, sentence.getBytes());
+			output = Utility.restPost(this.url, input);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

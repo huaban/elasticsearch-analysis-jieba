@@ -1,6 +1,7 @@
 package org.elasticsearch.index.analysis;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public final class JiebaTokenFilter extends TokenFilter {
     if (tokenIter == null || !tokenIter.hasNext()) {
       if (input.incrementToken()) {
 
-        tokenBuffer = segmenter.segmentSentence(termAtt.toString());
+        tokenBuffer = segmenter.segmentSentence(new StringReader(termAtt.toString()));
         tokenIter = tokenBuffer.iterator();
 
         if (!tokenIter.hasNext())
