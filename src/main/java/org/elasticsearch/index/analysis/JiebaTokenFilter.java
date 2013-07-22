@@ -7,54 +7,56 @@ import java.util.List;
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 
 public final class JiebaTokenFilter extends TokenFilter {
-  
-  JiebaSegmenter segmenter;
-  
-  private Iterator<String> tokenIter;
-  private List<String> tokenBuffer;
+
+    JiebaSegmenter segmenter;
+
+    private Iterator<Object> tokenIter;
+    private JSONArray array;
+
+    private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
+
+    public JiebaTokenFilter(String url, TokenStream input) {
+        super(input);
+        segmenter = new JiebaSegmenter(url);
+    }
+
+    public JiebaTokenFilter(String ip, Integer port, String type, String key, TokenStream input) {
+        super(input);
+        segmenter = new JiebaSegmenter(ip, port, type, key);
+    }
+
+
+    @Override
+    public boolean incrementToken() throws IOException {
+        if (tokenIter == null || !tokenIter.hasNext()) {
+            if (input.incrementToken()) {
+                array = segmenter.segmentSentence(termAtt.toString());
+                tokenIter = array.iterator();
+                if (!tokenIter.hasNext()) return false;
+            } else {
+                return false; // no more sentences, end of stream!
+            }
+        }
+        // WordTokenFilter must clear attributes, as it is creating new tokens.
+        clearAttributes();
+
+        JSONObject nextWord = (JSONObject) tokenIter.next();
+        String w = nextWord.getString("w");
+        termAtt.copyBuffer(w.toCharArray(), 0, w.length());
+        return true;
+    }  
     
-  private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
-    
-  public JiebaTokenFilter(String url, TokenStream input) {
-    super(input);
-    segmenter = new JiebaSegmenter(url);
-  }
-  
-  public JiebaTokenFilter(String ip, Integer port, String type, TokenStream input) {
-    super(input);
-    segmenter = new JiebaSegmenter(ip, port, type);
-  }  
-
-  
-  @Override
-  public boolean incrementToken() throws IOException {
-    if (tokenIter == null || !tokenIter.hasNext()) {
-      if (input.incrementToken()) {
-
-        tokenBuffer = segmenter.segmentSentence(termAtt.toString());
-        tokenIter = tokenBuffer.iterator();
-
-        if (!tokenIter.hasNext())
-          return false;
-      } else {
-        return false; // no more sentences, end of stream!
-      }
-    } 
-    // WordTokenFilter must clear attributes, as it is creating new tokens.
-    clearAttributes();
-
-    String nextWord = tokenIter.next();
-    termAtt.copyBuffer(nextWord.toCharArray(), 0, nextWord.length());
-    return true;    
-  }
-  
-  @Override
-  public void reset() throws IOException {
-    super.reset();
-    tokenIter = null;
-  }
+    @Override
+    public void reset() throws IOException {
+        super.reset();
+        tokenIter = null;
+    }
 
 }

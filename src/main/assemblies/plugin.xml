@@ -20,7 +20,6 @@
 			<useTransitiveFiltering>true</useTransitiveFiltering>
 			<includes>
 				<include>com.alibaba:fastjson</include>
-				<include>com.huaban:thrift-connection-pool</include>
 			</includes>
 		</dependencySet>
 	</dependencySets>

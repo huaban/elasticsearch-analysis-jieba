@@ -13,21 +13,23 @@ public class JiebaTokenFilterFactory extends AbstractTokenFilterFactory {
 	private String ip;
 	private Integer port;
 	private String type;
+	private String key;
 
 
 	@Inject
 	public JiebaTokenFilterFactory(Index index, Settings indexSettings,
 			String name, Settings settings) {
 		super(index, indexSettings, name, settings);
-		ip = settings.get("ip", "172.31.255.10");
+		ip = settings.get("ip", "183.136.223.174");
 		port = settings.getAsInt("port", 8000);
-		type = settings.get("t", "normal");
+		type = settings.get("t", "index");
+		key = settings.get("key", "H2jo8vfZk7");
 		log.info("ip:{} port:{} type:{}", ip, port, type);
 	}
 
 	@Override
 	public TokenStream create(TokenStream input) {
-		return new JiebaTokenFilter(this.ip, this.port, this.type, input);
+		return new JiebaTokenFilter(this.ip, this.port, this.type, this.key, input);
 	}
 
 }

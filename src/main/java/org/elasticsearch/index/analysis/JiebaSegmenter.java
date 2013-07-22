@@ -16,14 +16,12 @@ public class JiebaSegmenter {
         this.url = url;
     }
     
-	public JiebaSegmenter(String ip, Integer port, String type) {
-	    this(String.format("http://%s:%d/_segment?type=%s", ip, port, type));
+	public JiebaSegmenter(String ip, Integer port, String type, String key) {
+	    this(String.format("http://%s:%d/_segment?type=%s&key=%s", ip, port, type, key));
 	}
 	
 
-	public List<String> segmentSentence(String sentence) {
-		List<String> result = Collections.emptyList();
-
+	public JSONArray segmentSentence(String sentence) {
 		String output = null;
 		try {
 			output = Utility.restPost(this.url, sentence.getBytes());
@@ -35,15 +33,10 @@ public class JiebaSegmenter {
 			DefaultJSONParser parser = new DefaultJSONParser(output);
 			JSONArray array = (JSONArray) parser.parse();
 			if (array.size() > 0) {
-				result = new ArrayList<String>();
-				for (int i = 0; i < array.size(); ++i) {
-					JSONObject obj = array.getJSONObject(i);
-					result.add(obj.getString("word"));
-				}
-				return result;
+				return array;
 			}
 		}
 
-		return result;
+		return new JSONArray();
 	}
 }
