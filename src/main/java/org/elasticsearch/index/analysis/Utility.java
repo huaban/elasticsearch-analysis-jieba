@@ -41,7 +41,7 @@ public class Utility {
 				"application/x-www-form-urlencoded");
 		// 实例一个输出流对象
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(urlconn.getOutputStream()));
-		int len = 1024;
+		int len = 4096;
 		char[] buff = new char[len];
 		while ((len = in.read(buff)) != -1) {
 			bw.write(buff, 0, len);

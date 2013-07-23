@@ -46,11 +46,11 @@ public final class JiebaTokenizer extends Tokenizer {
 		clearAttributes();
 
         JSONObject nextWord = (JSONObject) tokenIter.next();
-        int startOffset = nextWord.getInteger("s");
-        int endOffset = nextWord.getInteger("e");
+        int startOffset = nextWord.getInteger("start_offset");
+        int endOffset = nextWord.getInteger("end_offset");
         offset = endOffset;
         offsetAtt.setOffset(startOffset, endOffset);
-        termAtt.copyBuffer(nextWord.getString("w").toCharArray(), 0, endOffset - startOffset);
+        termAtt.copyBuffer(nextWord.getString("word").toCharArray(), 0, endOffset - startOffset);
 		return true;
 	}
     

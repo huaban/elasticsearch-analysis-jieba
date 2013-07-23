@@ -49,7 +49,7 @@ public final class JiebaTokenFilter extends TokenFilter {
         clearAttributes();
 
         JSONObject nextWord = (JSONObject) tokenIter.next();
-        String w = nextWord.getString("w");
+        String w = nextWord.getString("word");
         termAtt.copyBuffer(w.toCharArray(), 0, w.length());
         return true;
     }  
