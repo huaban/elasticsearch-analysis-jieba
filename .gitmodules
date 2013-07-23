@@ -1,0 +1,3 @@
+[submodule "jieba"]
+	path = jieba
+	url = git://github.com/fxsjy/jieba.git
