@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -37,7 +38,7 @@ public class JiebaSegmenterTest extends TestCase {
     public void test() throws Exception {
 
         String output =
-                Utility.restPost("http://127.0.0.1:8000/_segment?type=all", "中华人民共和国".getBytes());
+                Utility.restPost("http://183.136.223.174:8000/_segment?type=all", new StringReader("中华人民共和国"));
         if (null != output && output.length() > 0) {
             DefaultJSONParser parser = new DefaultJSONParser(output);
             JSONArray array = (JSONArray) parser.parse();
