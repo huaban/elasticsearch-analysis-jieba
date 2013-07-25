@@ -1,4 +1,4 @@
-package org.elasticsearch.index.analysis.py;
+package org.elasticsearch.index.analysis;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,8 +12,6 @@ import org.python.core.PyDictionary;
 import org.python.core.PyList;
 import org.python.core.PyString;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 
 public final class PyJiebaTokenizer extends Tokenizer {
 
@@ -28,10 +26,10 @@ public final class PyJiebaTokenizer extends Tokenizer {
     
     private int offset = 0;
 
-	public PyJiebaTokenizer(String type, File pluginFile, File configFile, Reader input) {
+	public PyJiebaTokenizer(String type, Reader input) {
 		super(input);
 		this.type = type;
-		segmenter = PyJiebaSegmenter.getInstance(pluginFile, configFile);
+		segmenter = PyJiebaSegmenter.getInstance();
 	}
 
 	@Override

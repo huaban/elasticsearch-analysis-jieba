@@ -20,6 +20,7 @@ def load_stop_words(dict_path):
         content = f.read().decode('utf-8')
         for line in content.split("\n"):
             stop_words.add(line.strip())
+        stop_words.add(' ')
     f.closed
     print 'finish load stop words.'
 
@@ -63,7 +64,7 @@ def __prepare(raw):
     return __q2b(raw.encode('utf-8'))
 
 
-def cut_for_index(raw, stop=False):
+def cut_for_index(raw):
     """
     """
     raw = __prepare(raw)
@@ -73,13 +74,11 @@ def cut_for_index(raw, stop=False):
     r = []
     for w in result:
         r.append({"word":w[0], "start_offset":int(w[1]), "end_offset":int(w[2])})
-    if stop:
-        return __filter(r)
-    else:
-        return r
+    return __filter(r)
 
 
-def cut_for_search(raw, stop=False):
+
+def cut_for_search(raw):
     """
     """
     raw = __prepare(raw)
@@ -89,12 +88,9 @@ def cut_for_search(raw, stop=False):
     r = []
     for w in result:
         r.append({"word":w[0], "start_offset":int(w[1]), "end_offset":int(w[2])})
-    if stop:
-        return __filter(r)
-    else:
-        return r
+    return __filter(r)
 
-def cut_with_pos(raw, stop=False):
+def cut_with_pos(raw, stop=True):
     """
     part of speech(词性)
     """

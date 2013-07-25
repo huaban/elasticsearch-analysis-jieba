@@ -1,21 +1,17 @@
-package org.elasticsearch.index.analysis.py;
+package org.elasticsearch.index.analysis;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.Iterator;
-import java.util.List;
 
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.python.core.PyDictionary;
 import org.python.core.PyList;
 import org.python.core.PyString;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+
 
 
 public final class PyJiebaTokenFilter extends TokenFilter {
@@ -28,10 +24,10 @@ public final class PyJiebaTokenFilter extends TokenFilter {
 
     private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
 
-    public PyJiebaTokenFilter(String type, File pluginFile, File configFile, TokenStream input) {
+    public PyJiebaTokenFilter(String type, TokenStream input) {
         super(input);
         this.type = type;
-        segmenter = PyJiebaSegmenter.getInstance(pluginFile, configFile);
+        segmenter = PyJiebaSegmenter.getInstance();
     }
 
 

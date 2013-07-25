@@ -1,4 +1,4 @@
-package org.elasticsearch.index.analysis.py;
+package org.elasticsearch.index.analysis;
 
 
 import java.io.File;
@@ -16,7 +16,6 @@ public class PyJiebaTokenFilterFactory extends AbstractTokenFilterFactory {
 	private final ESLogger log = Loggers.getLogger(PyJiebaTokenFilterFactory.class);
 	private String type;
 	private File configFile;
-	private File pluginFile;
 
 	@Inject
 	public PyJiebaTokenFilterFactory(Index index, Settings indexSettings,
@@ -25,13 +24,13 @@ public class PyJiebaTokenFilterFactory extends AbstractTokenFilterFactory {
 		type = settings.get("t", "index");
 		Environment env = new Environment(indexSettings);
 		configFile = env.configFile();
-		pluginFile = env.pluginsFile();
+		PyJiebaSegmenter.init(configFile);
 		log.info("type:{}", type);
 	}
 
 	@Override
 	public TokenStream create(TokenStream input) {
-		return new PyJiebaTokenFilter(type, pluginFile, configFile, input);
+		return new PyJiebaTokenFilter(type, input);
 	}
 
 }

@@ -1,15 +1,14 @@
 /**
  * 
  */
-package org.elasticsearch.index.analysis.py;
+package org.elasticsearch.index.analysis;
 
 import java.io.CharArrayWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.Environment;
+
 import org.python.core.PyFunction;
 import org.python.core.PyList;
 import org.python.core.PyString;
@@ -25,9 +24,8 @@ public class PyJiebaSegmenter {
     private static String SOUGOU_DICT = "jieba/sougou.dict";
     private static String USER_DICT = "jieba/user.dict";
     private static String STOP_WORDS_DICT = "jieba/chinese_stopwords.dict";
-    private static String JIEBA_PLUGIN = "jieba";
     private static PyJiebaSegmenter instance;
-    private static PythonInterpreter interpreter = new PythonInterpreter();
+    private static PythonInterpreter interpreter;
     private static PyFunction load_user_dict;
     private static PyFunction load_stop_words;
     private static PyFunction index;
@@ -40,16 +38,17 @@ public class PyJiebaSegmenter {
     }
     
     private PyJiebaSegmenter() {
+        interpreter = new PythonInterpreter();
+        PySystemState sys = interpreter.getSystemState();
+        sys.setdefaultencoding("utf-8");
+        sys.path.add(System.getenv("HOME") + "/jieba");
+        interpreter.execfile(PyJiebaSegmenter.class.getResourceAsStream("/wrapper_jieba.py"));
+        PyFunction init = (PyFunction) interpreter.get("initialize", PyFunction.class);
+        init.__call__();
     }
     
-    public static PyJiebaSegmenter getInstance(File pluginFile, File configFile) {
+    public static void init(File configFile) {
         if (!isLoaded) {
-            PySystemState sys = interpreter.getSystemState();
-            sys.setdefaultencoding("utf-8");
-            sys.path.add(new File(pluginFile, JIEBA_PLUGIN).getAbsolutePath());
-            interpreter.execfile(PyJiebaSegmenter.class.getResourceAsStream("/wrapper_jieba.py"));	
-            PyFunction init = (PyFunction)interpreter.get("initialize",PyFunction.class);  
-            init.__call__();  
             load_user_dict = (PyFunction)interpreter.get("load_user_dict", PyFunction.class);
             load_stop_words = (PyFunction)interpreter.get("load_stop_words", PyFunction.class);
             index = (PyFunction)interpreter.get("cut_for_index", PyFunction.class);
@@ -62,6 +61,9 @@ public class PyJiebaSegmenter {
             load_stop_words.__call__(new PyString(stop_words_dict.getAbsolutePath()));
             isLoaded = true;
         }
+    }
+    
+    public static PyJiebaSegmenter getInstance() {
         return instance;
     }
     
@@ -100,4 +102,7 @@ public class PyJiebaSegmenter {
         return (PyList) search.__call__(new PyString(sentence));
     }
 
+   public static void main(String[] args) {
+       
+   }
 }

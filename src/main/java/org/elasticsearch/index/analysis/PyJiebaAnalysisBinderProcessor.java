@@ -1,4 +1,4 @@
-package org.elasticsearch.index.analysis.py;
+package org.elasticsearch.index.analysis;
 
 import org.elasticsearch.index.analysis.AnalysisModule;
 

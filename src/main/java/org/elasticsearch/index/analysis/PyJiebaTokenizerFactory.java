@@ -1,4 +1,4 @@
-package org.elasticsearch.index.analysis.py;
+package org.elasticsearch.index.analysis;
 
 import java.io.File;
 import java.io.Reader;
@@ -17,7 +17,6 @@ public class PyJiebaTokenizerFactory extends AbstractTokenizerFactory {
 
 	private String type;
 	private File configFile;
-	private File pluginFile;
 	
 	@Inject
 	public PyJiebaTokenizerFactory(Index index, Settings indexSettings,
@@ -26,13 +25,13 @@ public class PyJiebaTokenizerFactory extends AbstractTokenizerFactory {
 		type = settings.get("t", "index");
 		Environment env = new Environment(indexSettings);
 		configFile = env.configFile();
-		pluginFile = env.pluginsFile();
+		PyJiebaSegmenter.init(configFile);
 		log.info("type:{}", type);
 	}
 
 	@Override
 	public Tokenizer create(Reader reader) {
-		return new PyJiebaTokenizer(type, pluginFile, configFile, reader);
+		return new PyJiebaTokenizer(type, reader);
 	}
 
 }

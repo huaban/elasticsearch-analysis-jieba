@@ -19,7 +19,6 @@
 			<useProjectArtifact>true</useProjectArtifact>
 			<useTransitiveFiltering>true</useTransitiveFiltering>
 			<includes>
-				<include>com.alibaba:fastjson</include>
 				<include>org.python:jython-standalone</include>
 			</includes>
 		</dependencySet>

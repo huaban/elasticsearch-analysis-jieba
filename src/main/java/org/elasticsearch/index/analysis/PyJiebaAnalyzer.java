@@ -1,4 +1,4 @@
-package org.elasticsearch.index.analysis.py;
+package org.elasticsearch.index.analysis;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.elasticsearch.common.logging.ESLogger;
@@ -13,7 +13,6 @@ public class PyJiebaAnalyzer extends Analyzer {
 	private final ESLogger log = Loggers.getLogger(PyJiebaAnalyzer.class);
 	
 	private File configFile;
-	private File pluginFile;
 	private String type;
 
 	public PyJiebaAnalyzer(Settings indexSettings, Settings settings) {
@@ -21,13 +20,13 @@ public class PyJiebaAnalyzer extends Analyzer {
 		type = settings.get("t", "index");
 		Environment env = new Environment(indexSettings);
 	    configFile = env.configFile();
-	    pluginFile = env.pluginsFile();
+	    PyJiebaSegmenter.init(configFile);
 		log.info("type:{}", type);
 	}
 
 	@Override
 	protected TokenStreamComponents createComponents(String fieldName,
 			Reader reader) {
-		return new TokenStreamComponents(new PyJiebaTokenizer(type, pluginFile, configFile, reader));
+		return new TokenStreamComponents(new PyJiebaTokenizer(type, reader));
 	}
 }

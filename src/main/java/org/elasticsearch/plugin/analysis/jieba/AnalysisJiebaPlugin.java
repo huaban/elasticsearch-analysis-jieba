@@ -2,7 +2,7 @@ package org.elasticsearch.plugin.analysis.jieba;
 
 import org.elasticsearch.common.inject.Module;
 import org.elasticsearch.index.analysis.AnalysisModule;
-import org.elasticsearch.index.analysis.py.PyJiebaAnalysisBinderProcessor;
+import org.elasticsearch.index.analysis.PyJiebaAnalysisBinderProcessor;
 import org.elasticsearch.plugins.AbstractPlugin;
 
 
