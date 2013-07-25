@@ -10,6 +10,7 @@ import java.io.StringReader;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.elasticsearch.index.analysis.py.PyJiebaTokenizer;
 import org.junit.Test;
 
 public class JiebaTokenizerTest {
@@ -29,6 +30,20 @@ public class JiebaTokenizerTest {
         }
     }
     
+    @Test
+    public void test_py() throws IOException {
+        Tokenizer tokenizer = new PyJiebaTokenizer("index", new File("."), new File("data"), new StringReader("中华人民共和国"));
+        while(tokenizer.incrementToken() == true) {
+            CharTermAttribute termAtt = tokenizer.getAttribute(CharTermAttribute.class);
+            System.out.println(String.format("term:%s", termAtt.toString()));
+        }
+        tokenizer.setReader(new StringReader("我是中国人"));
+        tokenizer.reset();
+        while(tokenizer.incrementToken() == true) {
+            CharTermAttribute termAtt = tokenizer.getAttribute(CharTermAttribute.class);
+            System.out.println(String.format("term:%s", termAtt.toString()));
+        }
+    }    
     Tokenizer tokenizer = new JiebaTokenizer("183.136.223.174", 8000, "index", "4IWf3Ul9OuI1x", new StringReader("中华人民共和国"));
     
     @Test
