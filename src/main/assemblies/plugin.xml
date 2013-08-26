@@ -19,7 +19,7 @@
 			<useProjectArtifact>true</useProjectArtifact>
 			<useTransitiveFiltering>true</useTransitiveFiltering>
 			<includes>
-				<include>org.python:jython-standalone</include>
+				<include>com.huaban:jieba-analysis</include>
 			</includes>
 		</dependencySet>
 	</dependencySets>

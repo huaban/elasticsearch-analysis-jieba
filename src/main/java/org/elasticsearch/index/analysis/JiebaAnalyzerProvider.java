@@ -9,18 +9,18 @@ import org.elasticsearch.index.analysis.AbstractIndexAnalyzerProvider;
 import org.elasticsearch.index.settings.IndexSettings;
 
 
-public class PyJiebaAnalyzerProvider extends AbstractIndexAnalyzerProvider<PyJiebaAnalyzer> {
-  private final PyJiebaAnalyzer analyzer;
+public class JiebaAnalyzerProvider extends AbstractIndexAnalyzerProvider<JiebaAnalyzer> {
+  private final JiebaAnalyzer analyzer;
 
   @Inject
-  public PyJiebaAnalyzerProvider(Index index, @IndexSettings Settings indexSettings, Environment env,
+  public JiebaAnalyzerProvider(Index index, @IndexSettings Settings indexSettings, Environment env,
       @Assisted String name, @Assisted Settings settings) {
     super(index, indexSettings, name, settings);
-    analyzer = new PyJiebaAnalyzer(indexSettings, settings);
+    analyzer = new JiebaAnalyzer(indexSettings, settings);
   }
 
   @Override
-  public PyJiebaAnalyzer get() {
+  public JiebaAnalyzer get() {
     return this.analyzer;
   }
 }
