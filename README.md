@@ -1,4 +1,4 @@
-Smart Chinese Analysis for ElasticSearch
+Jieba Analysis for ElasticSearch
 ==================================
 
 The Jieba Analysis plugin integrates Lucene / Jieba Analyzer into elasticsearch, support customized dictionary.
