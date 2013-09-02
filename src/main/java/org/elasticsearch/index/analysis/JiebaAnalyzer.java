@@ -34,68 +34,63 @@ public class JiebaAnalyzer extends Analyzer {
      * @return an unmodifiable instance of the default stop-words set.
      */
     public static CharArraySet getDefaultStopSet() {
-	return DefaultSetHolder.DEFAULT_STOP_SET;
+        return DefaultSetHolder.DEFAULT_STOP_SET;
     }
 
     /**
-     * Atomically loads the DEFAULT_STOP_SET in a lazy fashion once the outer
-     * class accesses the static final set the first time.;
+     * Atomically loads the DEFAULT_STOP_SET in a lazy fashion once the outer class accesses the
+     * static final set the first time.;
      */
     private static class DefaultSetHolder {
-	static final CharArraySet DEFAULT_STOP_SET;
+        static final CharArraySet DEFAULT_STOP_SET;
 
-	static {
-	    try {
-		DEFAULT_STOP_SET = loadDefaultStopWordSet();
-	    } catch (IOException ex) {
-		// default set should always be present as it is part of the
-		// distribution (JAR)
-		throw new RuntimeException(
-			"Unable to load default stopword set");
-	    }
-	}
+        static {
+            try {
+                DEFAULT_STOP_SET = loadDefaultStopWordSet();
+            } catch (IOException ex) {
+                // default set should always be present as it is part of the
+                // distribution (JAR)
+                throw new RuntimeException("Unable to load default stopword set");
+            }
+        }
 
-	static CharArraySet loadDefaultStopWordSet() throws IOException {
-	    // make sure it is unmodifiable as we expose it in the outer class
-	    return CharArraySet.unmodifiableSet(WordlistLoader.getWordSet(
-		    IOUtils.getDecodingReader(JiebaAnalyzer.class,
-			    DEFAULT_STOPWORD_FILE, IOUtils.CHARSET_UTF_8),
-		    STOPWORD_FILE_COMMENT, Version.LUCENE_CURRENT));
-	}
+        static CharArraySet loadDefaultStopWordSet() throws IOException {
+            // make sure it is unmodifiable as we expose it in the outer class
+            return CharArraySet.unmodifiableSet(WordlistLoader.getWordSet(IOUtils
+                    .getDecodingReader(JiebaAnalyzer.class, DEFAULT_STOPWORD_FILE,
+                            IOUtils.CHARSET_UTF_8), STOPWORD_FILE_COMMENT, Version.LUCENE_CURRENT));
+        }
     }
 
     private File configFile;
     private String type;
 
     public JiebaAnalyzer(Settings indexSettings, Settings settings) {
-	super();
-	type = settings.get("seg_mode", "index");
-	boolean stop = settings.getAsBoolean("stop", true);
-	stopWords = stop ? DefaultSetHolder.DEFAULT_STOP_SET
-		: CharArraySet.EMPTY_SET;
+        super();
+        type = settings.get("seg_mode", "index");
+        boolean stop = settings.getAsBoolean("stop", true);
+        stopWords = stop ? DefaultSetHolder.DEFAULT_STOP_SET : CharArraySet.EMPTY_SET;
 
-	Environment env = new Environment(indexSettings);
-	configFile = env.configFile();
-	WordDictionary.getInstance().init(configFile);
+        Environment env = new Environment(indexSettings);
+        configFile = env.configFile();
+        WordDictionary.getInstance().init(configFile);
     }
 
     public JiebaAnalyzer(String segMode, File configFile, boolean isStop) {
-	super();
-	this.type = segMode;
-	this.stopWords = isStop ? DefaultSetHolder.DEFAULT_STOP_SET
-		: CharArraySet.EMPTY_SET;
-	this.configFile = configFile;
-	WordDictionary.getInstance().init(configFile);
+        super();
+        this.type = segMode;
+        this.stopWords = isStop ? DefaultSetHolder.DEFAULT_STOP_SET : CharArraySet.EMPTY_SET;
+        this.configFile = configFile;
+        WordDictionary.getInstance().init(new File(configFile, "jieba"));
     }
 
     @Override
-    protected TokenStreamComponents createComponents(String fieldName,
-	    Reader reader) {
-	Tokenizer tokenizer = new SentenceTokenizer(reader);
-	TokenStream result = new JiebaTokenFilter(type, tokenizer);
-	if (!stopWords.isEmpty()) {
-	    result = new StopFilter(Version.LUCENE_CURRENT, result, stopWords);
-	}
-	return new TokenStreamComponents(tokenizer, result);
+    protected TokenStreamComponents createComponents(String fieldName, Reader reader) {
+        Tokenizer tokenizer = new SentenceTokenizer(reader);
+        TokenStream result = new JiebaTokenFilter(type, tokenizer);
+        if (!stopWords.isEmpty()) {
+            result = new StopFilter(Version.LUCENE_CURRENT, result, stopWords);
+        }
+        return new TokenStreamComponents(tokenizer, result);
     }
 }
