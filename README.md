@@ -178,7 +178,7 @@ result
         {
             "token": "中华人民共和国 hello",
             "start_offset": 0,
-            "end_offset": 7,
+            "end_offset": 13,
             "type": "word",
             "position": 1
         }
