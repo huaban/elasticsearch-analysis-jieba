@@ -59,6 +59,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.8</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -73,7 +74,7 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-			<plugin>
+            <!--><plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.11</version>
@@ -82,7 +83,7 @@
 						<include>**/*Tests.java</include>
 					</includes>
 				</configuration>
-			</plugin>
+            </plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>

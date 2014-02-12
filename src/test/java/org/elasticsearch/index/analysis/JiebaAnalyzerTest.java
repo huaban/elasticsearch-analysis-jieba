@@ -86,6 +86,7 @@ public class JiebaAnalyzerTest {
 	for (String sentence : sentences) {
 	    TokenStream tokenStream = analyzer.tokenStream(null,
 		    new StringReader(sentence));
+        tokenStream.reset();
 	    while (tokenStream.incrementToken()) {
 		CharTermAttribute termAtt = tokenStream
 			.getAttribute(CharTermAttribute.class);
@@ -96,6 +97,7 @@ public class JiebaAnalyzerTest {
 				+ offsetAtt.startOffset() + ","
 				+ offsetAtt.endOffset());
 	    }
+        tokenStream.reset();
 	}
     }
 
@@ -107,6 +109,7 @@ public class JiebaAnalyzerTest {
 	for (String sentence : sentences) {
 	    TokenStream tokenStream = analyzer.tokenStream(null,
 		    new StringReader(sentence));
+        tokenStream.reset();
 	    while (tokenStream.incrementToken()) {
 		CharTermAttribute termAtt = tokenStream
 			.getAttribute(CharTermAttribute.class);
@@ -117,6 +120,7 @@ public class JiebaAnalyzerTest {
 				+ offsetAtt.startOffset() + ","
 				+ offsetAtt.endOffset());
 	    }
+        tokenStream.reset();
 	}
     }
 
@@ -129,6 +133,7 @@ public class JiebaAnalyzerTest {
 	for (String sentence : bugSentences) {
 	    TokenStream tokenStream = analyzer.tokenStream(null,
 		    new StringReader(sentence));
+        tokenStream.reset();
 	    while (tokenStream.incrementToken()) {
 		CharTermAttribute termAtt = tokenStream
 			.getAttribute(CharTermAttribute.class);
@@ -139,6 +144,7 @@ public class JiebaAnalyzerTest {
 				+ offsetAtt.startOffset() + ","
 				+ offsetAtt.endOffset());
 	    }
+        tokenStream.reset();
 	}
 
     }
