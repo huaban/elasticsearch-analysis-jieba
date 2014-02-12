@@ -3,6 +3,7 @@ package org.elasticsearch.index.analysis;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
@@ -39,7 +40,12 @@ public final class JiebaTokenFilter extends TokenFilter {
 		if (type.equals("index"))
 		    array = segmenter
 			    .process(termAtt.toString(), SegMode.INDEX);
-		else
+		else if (type.equals("other")) {
+            array = new ArrayList<SegToken>();
+            String token = termAtt.toString();
+            array.add(new SegToken(token, 0, token.length()));
+        }
+        else
 		    array = segmenter.process(termAtt.toString(),
 			    SegMode.SEARCH);
 		tokenIter = array.iterator();
