@@ -100,6 +100,27 @@ public class JiebaAnalyzerTest {
     }
 
     @Test
+    public void testSegModeOther() throws IOException {
+	JiebaAnalyzer analyzer = new JiebaAnalyzer("other", new File("data"),
+		true);
+
+	for (String sentence : sentences) {
+	    TokenStream tokenStream = analyzer.tokenStream(null,
+		    new StringReader(sentence));
+	    while (tokenStream.incrementToken()) {
+		CharTermAttribute termAtt = tokenStream
+			.getAttribute(CharTermAttribute.class);
+		OffsetAttribute offsetAtt = tokenStream
+			.getAttribute(OffsetAttribute.class);
+		System.out
+			.println(termAtt.toString() + ","
+				+ offsetAtt.startOffset() + ","
+				+ offsetAtt.endOffset());
+	    }
+	}
+    }
+
+    @Test
     public void testBugSentences() throws IOException {
 	String[] bugSentences = new String[] { "干脆就把那部蒙人的闲法给废了拉倒！RT @laoshipukong : 27日，全国人大常委会第三次审议侵权责任法草案，删除了有关医疗损害责任“举证倒置”的规定。在医患纠纷中本已处于弱势地位的消费者由此将陷入万劫不复的境地。 " };
 	JiebaAnalyzer analyzer = new JiebaAnalyzer("index", new File("data"),
