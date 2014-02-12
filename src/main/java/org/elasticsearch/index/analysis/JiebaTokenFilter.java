@@ -43,6 +43,17 @@ public final class JiebaTokenFilter extends TokenFilter {
 		else if (type.equals("other")) {
             array = new ArrayList<SegToken>();
             String token = termAtt.toString();
+            char[] ctoken = token.toCharArray();
+            for (int i = 0; i< ctoken.length; i++) {
+                /*全角=>半角*/
+                if (ctoken[i] > 0xFF00 && ctoken[i] < 0xFF5F)
+                    ctoken[i] = (char)(ctoken[i] - 0xFEE0);
+
+                /*大写=>小写*/
+                if (ctoken[i] > 0x40 && ctoken[i] < 0x5b)
+                    ctoken[i] = (char)(ctoken[i] + 0x20);
+            }
+            token = String.valueOf(ctoken);
             array.add(new SegToken(token, 0, token.length()));
         }
         else
