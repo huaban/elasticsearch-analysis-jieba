@@ -6,7 +6,7 @@ The Jieba Analysis plugin integrates Lucene / Jieba Analyzer into elasticsearch,
     ----------------------------------------------------
     | Jieba Chinese Analysis Plugin | ElasticSearch    |
     ----------------------------------------------------
-    | 0.0.2-SNAPSHOT                | 1.0.0RC2         |
+    | 0.0.2                | 1.0.0RC2         |
     ----------------------------------------------------
 
 The plugin includes the `jieba` analyzer, `jieba` tokenizer, and `jieba` token filter, and have two mode you can choose. one is `index` which means it will be used when you want to index a document. another is `search` mode which used when you want to search something.
