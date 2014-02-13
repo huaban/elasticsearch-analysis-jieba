@@ -2,7 +2,6 @@
 .gradle/
 *.iml
 work/
-/data/
 logs/
 .DS_Store
 build/

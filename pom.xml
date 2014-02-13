@@ -4,7 +4,7 @@
 
 	<groupId>org.elasticsearch</groupId>
 	<artifactId>elasticsearch-analysis-jieba</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<packaging>jar</packaging>
 
 	<name>elasticsearch-analysis-jieba</name>
@@ -24,7 +24,7 @@
 	</parent>
 
 	<properties>
-		<elasticsearch.version>0.90.2</elasticsearch.version>
+		<elasticsearch.version>1.0.0.RC2</elasticsearch.version>
 	</properties>
 
 	<repositories>
@@ -48,18 +48,19 @@
 			<version>${elasticsearch.version}</version>
 			<scope>compile</scope>
 		</dependency>
-        
+
         <dependency>
             <groupId>com.huaban</groupId>
             <artifactId>jieba-analysis</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.2</version>
         </dependency>
-        
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.8</version>
-		</dependency>	
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -73,7 +74,7 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-			<plugin>
+            <!--><plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.11</version>
@@ -82,7 +83,7 @@
 						<include>**/*Tests.java</include>
 					</includes>
 				</configuration>
-			</plugin>
+            </plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
