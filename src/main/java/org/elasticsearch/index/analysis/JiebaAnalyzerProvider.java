@@ -8,19 +8,20 @@ import org.elasticsearch.index.Index;
 import org.elasticsearch.index.analysis.AbstractIndexAnalyzerProvider;
 import org.elasticsearch.index.settings.IndexSettings;
 
+public class JiebaAnalyzerProvider extends
+        AbstractIndexAnalyzerProvider<JiebaAnalyzer> {
+    private final JiebaAnalyzer analyzer;
 
-public class JiebaAnalyzerProvider extends AbstractIndexAnalyzerProvider<JiebaAnalyzer> {
-  private final JiebaAnalyzer analyzer;
+    @Inject
+    public JiebaAnalyzerProvider(Index index,
+            @IndexSettings Settings indexSettings, Environment env,
+            @Assisted String name, @Assisted Settings settings) {
+        super(index, indexSettings, name, settings);
+        analyzer = new JiebaAnalyzer(indexSettings, settings);
+    }
 
-  @Inject
-  public JiebaAnalyzerProvider(Index index, @IndexSettings Settings indexSettings, Environment env,
-      @Assisted String name, @Assisted Settings settings) {
-    super(index, indexSettings, name, settings);
-    analyzer = new JiebaAnalyzer(indexSettings, settings);
-  }
-
-  @Override
-  public JiebaAnalyzer get() {
-    return this.analyzer;
-  }
+    @Override
+    public JiebaAnalyzer get() {
+        return this.analyzer;
+    }
 }

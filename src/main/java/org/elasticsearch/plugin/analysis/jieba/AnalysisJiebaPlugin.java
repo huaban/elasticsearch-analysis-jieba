@@ -9,19 +9,19 @@ public class AnalysisJiebaPlugin extends AbstractPlugin {
 
     @Override
     public String name() {
-	return "analysis-jieba";
+        return "analysis-jieba";
     }
 
     @Override
     public String description() {
-	return "jieba analysis";
+        return "jieba analysis";
     }
 
     @Override
     public void processModule(Module module) {
-	if (module instanceof AnalysisModule) {
-	    AnalysisModule analysisModule = (AnalysisModule) module;
-	    analysisModule.addProcessor(new JiebaAnalysisBinderProcessor());
-	}
+        if (module instanceof AnalysisModule) {
+            AnalysisModule analysisModule = (AnalysisModule) module;
+            analysisModule.addProcessor(new JiebaAnalysisBinderProcessor());
+        }
     }
 }
