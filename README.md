@@ -6,21 +6,13 @@ The Jieba Analysis plugin integrates Lucene / Jieba Analyzer into elasticsearch,
     ----------------------------------------------------
     | Jieba Chinese Analysis Plugin | ElasticSearch    |
     ----------------------------------------------------
-    | 0.0.1-SNAPSHOT (master)       | 0.90.*           |
+    | 0.0.2-SNAPSHOT                | 1.0.0RC2         |
     ----------------------------------------------------
 
 The plugin includes the `jieba` analyzer, `jieba` tokenizer, and `jieba` token filter, and have two mode you can choose. one is `index` which means it will be used when you want to index a document. another is `search` mode which used when you want to search something.
 
 
 ## Installation
-
-this project was depends on [jieba-analysis](https://github.com/huaban/jieba-analysis) which you should first clone it then install in your local repository.
-
-``` sh
-# clone and install jieba-analysis to your local repository.
-git clone https://github.com/huaban/jieba-analysis
-cd jieba-analysis
-mvn package install
 
 # compile and package current project
 git clone https://github.com/huaban/elasticsearch-analysis-jieba
@@ -32,12 +24,11 @@ mvn package
 cd {your_es_path}
 mkdir plugins/jieba
 
-# copy jieba-analysis-0.0.1-SNAPSHOT.jar and elasticsearch-analysis-jieba-0.0.1-SNAPSHOT.jar to plugins/jieba
-cd jieba-analysis
-cp target/jieba-analysis-0.0.1-SNAPSHOT.jar {your_es_path}/plugins/jieba
+# copy jieba-analysis-0.0.2.jar and elasticsearch-analysis-jieba-0.0.2-SNAPSHOT.jar to plugins/jieba
+cp ~/.m2/repository/com/huaban/jieba-analysis/0.0.2/jieba-analysis-0.0.2.jar {your_es_path}/plugins/jieba
 
 cd elasticsearch-analysis-jieba
-cp target/elasticsearch-analysis-jieba-0.0.1-SNAPSHOT.jar {your_es_path}/plugins/jieba
+cp target/elasticsearch-analysis-jieba-0.0.2-SNAPSHOT.jar {your_es_path}/plugins/jieba
 
 # copy user dict to config/jieba
 cp -r data/jieba/ {your_es_path}/config/
@@ -45,6 +36,9 @@ cp -r data/jieba/ {your_es_path}/config/
 
 that's all!
 
+## Changelog
+
+Add other mode. This mode don't split word, just doing some string conversion, case or full/half word
 
 ## Usage
 
@@ -65,6 +59,11 @@ curl -XPUT '0:9200/test/' -d '
                 "jieba_search" : {
                     "type" : "jieba",
                     "seg_mode" : "search",
+                    "stop" : true
+                },
+                "jieba_other" : {
+                    "type" : "jieba",
+                    "seg_mode" : "other",
                     "stop" : true
                 },
                 "jieba_index" : {
@@ -150,6 +149,27 @@ result
             "token": "中华人民共和国",
             "start_offset": 0,
             "end_offset": 7,
+            "type": "word",
+            "position": 1
+        }
+    ]
+}
+```
+
+``` sh
+# other mode 大小写全半角
+curl '0:9200/test/_analyze?analyzer=jieba_other' -d '中华人民共和国 HeLlo';echo
+```
+
+result
+
+``` javascript
+{
+    "tokens": [
+        {
+            "token": "中华人民共和国 hello",
+            "start_offset": 0,
+            "end_offset": 13,
             "type": "word",
             "position": 1
         }
