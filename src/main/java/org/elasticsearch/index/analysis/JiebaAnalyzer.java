@@ -30,7 +30,7 @@ public class JiebaAnalyzer extends Analyzer {
 
     /**
      * Returns an unmodifiable instance of the default stop-words set.
-     * 
+     *
      * @return an unmodifiable instance of the default stop-words set.
      */
     public static CharArraySet getDefaultStopSet() {
@@ -86,9 +86,14 @@ public class JiebaAnalyzer extends Analyzer {
 
     @Override
     protected TokenStreamComponents createComponents(String fieldName, Reader reader) {
-        Tokenizer tokenizer = new SentenceTokenizer(reader);
+        Tokenizer tokenizer;
+        if (type.equals("other")) {
+            tokenizer = new OtherTokenizer(Version.LUCENE_CURRENT, reader);
+        } else {
+            tokenizer = new SentenceTokenizer(reader);
+        }
         TokenStream result = new JiebaTokenFilter(type, tokenizer);
-        if (!stopWords.isEmpty()) {
+        if (!type.equals("other") && !stopWords.isEmpty()) {
             result = new StopFilter(Version.LUCENE_CURRENT, result, stopWords);
         }
         return new TokenStreamComponents(tokenizer, result);
