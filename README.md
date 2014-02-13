@@ -14,14 +14,6 @@ The plugin includes the `jieba` analyzer, `jieba` tokenizer, and `jieba` token f
 
 ## Installation
 
-this project was depends on [jieba-analysis](https://github.com/huaban/jieba-analysis) which you should first clone it then install in your local repository.
-
-``` sh
-# clone and install jieba-analysis to your local repository.
-git clone https://github.com/huaban/jieba-analysis
-cd jieba-analysis
-mvn package install
-
 # compile and package current project
 git clone https://github.com/huaban/elasticsearch-analysis-jieba
 cd elasticsearch-analysis-jieba
@@ -32,9 +24,8 @@ mvn package
 cd {your_es_path}
 mkdir plugins/jieba
 
-# copy jieba-analysis-0.0.1-SNAPSHOT.jar and elasticsearch-analysis-jieba-0.0.1-SNAPSHOT.jar to plugins/jieba
-cd jieba-analysis
-cp target/jieba-analysis-0.0.2.jar {your_es_path}/plugins/jieba
+# copy jieba-analysis-0.0.2.jar and elasticsearch-analysis-jieba-0.0.2-SNAPSHOT.jar to plugins/jieba
+cp ~/.m2/repository/com/huaban/jieba-analysis/0.0.2/jieba-analysis-0.0.2.jar {your_es_path}/plugins/jieba
 
 cd elasticsearch-analysis-jieba
 cp target/elasticsearch-analysis-jieba-0.0.2-SNAPSHOT.jar {your_es_path}/plugins/jieba
