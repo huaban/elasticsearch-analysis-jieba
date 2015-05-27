@@ -14,6 +14,7 @@ import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 import com.huaban.analysis.jieba.JiebaSegmenter;
 import com.huaban.analysis.jieba.JiebaSegmenter.SegMode;
 import com.huaban.analysis.jieba.SegToken;
+import com.huaban.analysis.jieba.Word;
 
 public final class JiebaTokenFilter extends TokenFilter {
 
@@ -54,7 +55,7 @@ public final class JiebaTokenFilter extends TokenFilter {
                             ctoken[i] = (char) (ctoken[i] + 0x20);
                     }
                     token = String.valueOf(ctoken);
-                    array.add(new SegToken(token, 0, token.length()));
+                    array.add(new SegToken(Word.createWord(token), 0, token.length()));
                 } else
                     array = segmenter.process(termAtt.toString(),
                             SegMode.SEARCH);
@@ -70,7 +71,8 @@ public final class JiebaTokenFilter extends TokenFilter {
 
         SegToken token = tokenIter.next();
         offsetAtt.setOffset(token.startOffset, token.endOffset);
-        termAtt.copyBuffer(token.token.toCharArray(), 0, token.token.length());
+        String tokenString = token.word.getToken();
+        termAtt.copyBuffer(tokenString.toCharArray(), 0, tokenString.length());
         typeAtt.setType("word");
         return true;
     }

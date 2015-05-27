@@ -4,6 +4,7 @@ import java.io.Reader;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.util.CharTokenizer;
+import org.apache.lucene.util.AttributeFactory;
 import org.apache.lucene.util.Version;
 
 /**
