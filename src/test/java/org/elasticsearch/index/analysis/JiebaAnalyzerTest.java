@@ -154,11 +154,12 @@ public class JiebaAnalyzerTest {
     
     @Test
     public void testLoadDict() throws IOException {
-    	JiebaAnalyzer analyzer = new JiebaAnalyzer("index", new File("dict"), true);
+    	JiebaAnalyzer analyzer = new JiebaAnalyzer("index", new File("data"), true);
     	
     	String[] sentences = new String[] {
     		"我剛買了一個 16GB 的 USB 隨身碟",
     		"我剛買了一個 16GBUSB 隨身碟",
+            "今天有iphone6和nexus5的大拍賣"
     	};
     	
         for (String sentence : sentences) {
