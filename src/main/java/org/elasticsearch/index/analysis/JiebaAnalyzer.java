@@ -76,7 +76,6 @@ public class JiebaAnalyzer extends Analyzer {
     private String type;
     
     private CharArraySet loadStopWords(File configFile) {
-    	String filename = new File(new File(configFile, "jieba"), "stopwords.txt").getAbsolutePath();
         try {
 			return CharArraySet.unmodifiableSet(
 					WordlistLoader.getWordSet(
