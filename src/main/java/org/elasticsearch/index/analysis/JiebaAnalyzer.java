@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
@@ -63,10 +64,9 @@ public class JiebaAnalyzer extends Analyzer {
             				IOUtils.getDecodingReader(
             						JiebaAnalyzer.class, 
             						DEFAULT_STOPWORD_FILE, 
-            						IOUtils.CHARSET_UTF_8
+            						StandardCharsets.UTF_8
             				),
-            				STOPWORD_FILE_COMMENT, 
-            				Version.LUCENE_CURRENT
+            				STOPWORD_FILE_COMMENT
             			)
             		);
         }
@@ -80,8 +80,7 @@ public class JiebaAnalyzer extends Analyzer {
 			return CharArraySet.unmodifiableSet(
 					WordlistLoader.getWordSet(
 							new FileReader(new File(new File(configFile, "jieba"), "stopwords.txt")),
-							STOPWORD_FILE_COMMENT, 
-							Version.LUCENE_CURRENT
+							STOPWORD_FILE_COMMENT
 						)
 					);
 		} catch (IOException e) {
