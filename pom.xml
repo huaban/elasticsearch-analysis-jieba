@@ -2,7 +2,6 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.elasticsearch</groupId>
 	<artifactId>elasticsearch-analysis-jieba</artifactId>
 	<version>0.0.4</version>
 	<packaging>jar</packaging>
@@ -49,7 +48,7 @@
         <dependency>
             <groupId>com.huaban</groupId>
             <artifactId>jieba-analysis</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <version>1.0.2</version>
         </dependency>
 
 		<dependency>
@@ -65,7 +64,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
@@ -74,7 +72,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1.2</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -104,7 +101,6 @@
             <plugin>
                 <groupId>com.carrotsearch.randomizedtesting</groupId>
                 <artifactId>junit4-maven-plugin</artifactId>
-                <version>2.1.11</version>
                 <configuration>
                     <systemProperties>
                         <basedir>${basedir}</basedir>
