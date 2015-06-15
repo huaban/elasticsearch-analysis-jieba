@@ -1,8 +1,10 @@
 package org.elasticsearch.index.analysis;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
@@ -57,35 +59,56 @@ public class JiebaAnalyzer extends Analyzer {
 
         static CharArraySet loadDefaultStopWordSet() throws IOException {
             // make sure it is unmodifiable as we expose it in the outer class
-            return CharArraySet.unmodifiableSet(WordlistLoader.getWordSet(
-                    IOUtils.getDecodingReader(JiebaAnalyzer.class,
-                            DEFAULT_STOPWORD_FILE, IOUtils.CHARSET_UTF_8),
-                    STOPWORD_FILE_COMMENT, Version.LUCENE_CURRENT));
+            return CharArraySet.unmodifiableSet(
+            		WordlistLoader.getWordSet(
+            				IOUtils.getDecodingReader(
+            						JiebaAnalyzer.class, 
+            						DEFAULT_STOPWORD_FILE, 
+            						StandardCharsets.UTF_8
+            				),
+            				STOPWORD_FILE_COMMENT
+            			)
+            		);
         }
     }
 
     private File configFile;
     private String type;
-
+    
+    private CharArraySet loadStopWords(File configFile) {
+        try {
+			return CharArraySet.unmodifiableSet(
+					WordlistLoader.getWordSet(
+							new FileReader(new File(new File(configFile, "jieba"), "stopwords.txt")),
+							STOPWORD_FILE_COMMENT
+						)
+					);
+		} catch (IOException e) {
+			return DefaultSetHolder.DEFAULT_STOP_SET;
+		}    	
+    }
+    
     public JiebaAnalyzer(Settings indexSettings, Settings settings) {
         super();
         type = settings.get("seg_mode", "index");
         boolean stop = settings.getAsBoolean("stop", true);
-        stopWords = stop ? DefaultSetHolder.DEFAULT_STOP_SET
-                : CharArraySet.EMPTY_SET;
 
         Environment env = new Environment(indexSettings);
         configFile = env.configFile();
+		this.stopWords = stop ? this.loadStopWords(configFile) : CharArraySet.EMPTY_SET;
         WordDictionary.getInstance().init(configFile);
     }
 
     public JiebaAnalyzer(String segMode, File configFile, boolean isStop) {
         super();
+        
         this.type = segMode;
-        this.stopWords = isStop ? DefaultSetHolder.DEFAULT_STOP_SET
-                : CharArraySet.EMPTY_SET;
         this.configFile = configFile;
         WordDictionary.getInstance().init(new File(configFile, "jieba"));
+		this.stopWords = isStop ? this.loadStopWords(configFile) : CharArraySet.EMPTY_SET;
+
+        this.log.info("JiebaAnalyzer isStop = {}", isStop);
+        this.log.info("JiebaAnalyzer stopWords = {}", this.stopWords.toString());        
     }
 
     @Override
