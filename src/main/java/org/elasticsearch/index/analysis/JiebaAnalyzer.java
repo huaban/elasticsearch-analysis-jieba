@@ -20,6 +20,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
 
 import com.huaban.analysis.jieba.WordDictionary;
+import org.elasticsearch.index.settings.IndexSettingsService;
 
 public class JiebaAnalyzer extends Analyzer {
 	private final ESLogger log = Loggers.getLogger(JiebaAnalyzer.class);
@@ -79,13 +80,13 @@ public class JiebaAnalyzer extends Analyzer {
 		}
 	}
 
-	public JiebaAnalyzer(Settings indexSettings, Settings settings) {
+	public JiebaAnalyzer(IndexSettingsService indexSettings, Settings settings) {
 		super();
 		type = settings.get("seg_mode", "index");
 		boolean stop = settings.getAsBoolean("stop", true);
 
-		Environment env = new Environment(indexSettings);
-		configFile = env.configFile();
+		Environment env = new Environment(indexSettings.getSettings());
+		configFile = env.configFile().toFile();
 		this.stopWords = stop ? this.loadStopWords(configFile)
 				: CharArraySet.EMPTY_SET;
 		WordDictionary.getInstance().init(configFile.toPath());
@@ -106,17 +107,16 @@ public class JiebaAnalyzer extends Analyzer {
 	}
 
 	@Override
-	protected TokenStreamComponents createComponents(String fieldName,
-			Reader reader) {
+	protected TokenStreamComponents createComponents(String fieldName) {
 		Tokenizer tokenizer;
 		if (type.equals("other")) {
-			tokenizer = new OtherTokenizer(Version.LUCENE_CURRENT, reader);
+			tokenizer = new OtherTokenizer();
 		} else {
-			tokenizer = new SentenceTokenizer(reader);
+			tokenizer = new SentenceTokenizer();
 		}
 		TokenStream result = new JiebaTokenFilter(type, tokenizer);
 		if (!type.equals("other") && !stopWords.isEmpty()) {
-			result = new StopFilter(Version.LUCENE_CURRENT, result, stopWords);
+			result = new StopFilter(result, stopWords);
 		}
 		return new TokenStreamComponents(tokenizer, result);
 	}
