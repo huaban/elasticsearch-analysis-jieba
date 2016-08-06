@@ -8,6 +8,9 @@ Based on [huaban/elasticsearch-analysis-jieba](https://github.com/huaban/elastic
 
 | Jieba Chinese Analysis Plugin | ElasticSearch | Analyzer       |
 |-------------------------------|---------------|----------------|
+| 0.0.2                         | 1.0.0RC2      | 0.0.2          |
+| 0.0.3-SNAPSHOT                | 1.3.0         | 1.0.0          |
+| 0.0.4                         | 1.5.x         | 1.0.2          |
 | 1.0.0                         | 2.3.3         | 1.0.2          |
 
 The plugin includes the `jieba` analyzer, `jieba` tokenizer, and `jieba` token filter, and have two mode you can choose. one is `index` which means it will be used when you want to index a document. another is `search` mode which used when you want to search something.
@@ -155,4 +158,25 @@ result
         }
     ]
 }
+```
+
+License
+-------
+
+```
+This software is licensed under the Apache 2 license, quoted below.
+
+Copyright (C) 2013 libin and Huaban Inc<http://www.huaban.com>
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License. You may obtain a copy of
+the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations under
+the License.
 ```
