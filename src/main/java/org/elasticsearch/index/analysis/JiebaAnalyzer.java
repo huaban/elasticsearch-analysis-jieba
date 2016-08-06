@@ -21,6 +21,7 @@ import org.elasticsearch.env.Environment;
 
 import com.huaban.analysis.jieba.WordDictionary;
 import org.elasticsearch.index.settings.IndexSettingsService;
+import org.elasticsearch.plugin.analysis.jieba.AnalysisJiebaPlugin;
 
 public class JiebaAnalyzer extends Analyzer {
 	private final ESLogger log = Loggers.getLogger(JiebaAnalyzer.class);
@@ -80,16 +81,8 @@ public class JiebaAnalyzer extends Analyzer {
 		}
 	}
 
-	public JiebaAnalyzer(IndexSettingsService indexSettings, Settings settings) {
-		super();
-		type = settings.get("seg_mode", "index");
-		boolean stop = settings.getAsBoolean("stop", true);
-
-		Environment env = new Environment(indexSettings.getSettings());
-		configFile = env.configFile().toFile();
-		this.stopWords = stop ? this.loadStopWords(configFile)
-				: CharArraySet.EMPTY_SET;
-		WordDictionary.getInstance().init(configFile.toPath());
+	public JiebaAnalyzer(Settings settings) {
+		this(settings.get("seg_mode", "index"), new File(new File(AnalysisJiebaPlugin.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent(), "config"), settings.getAsBoolean("stop", true));
 	}
 
 	public JiebaAnalyzer(String segMode, File configFile, boolean isStop) {
@@ -102,6 +95,7 @@ public class JiebaAnalyzer extends Analyzer {
 		this.stopWords = isStop ? this.loadStopWords(configFile)
 				: CharArraySet.EMPTY_SET;
 
+		this.log.info("Jieba segMode = {}", type);
 		this.log.info("JiebaAnalyzer isStop = {}", isStop);
 		this.log.info("JiebaAnalyzer stopWords = {}", this.stopWords.toString());
 	}

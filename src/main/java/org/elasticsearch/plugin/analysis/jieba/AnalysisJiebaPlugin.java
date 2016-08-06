@@ -23,7 +23,7 @@ public class AnalysisJiebaPlugin extends Plugin {
 
 	@Override
 	public Collection<Module> nodeModules() {
-		return Collections.singletonList(new JiebaIndicesAnalysisModule());
+		return Collections.<Module>singletonList(new JiebaIndicesAnalysisModule());
 	}
 
 

@@ -8,6 +8,7 @@ import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.analysis.AnalyzerScope;
 import org.elasticsearch.index.analysis.JiebaAnalyzer;
 import org.elasticsearch.index.analysis.PreBuiltAnalyzerProviderFactory;
+import org.elasticsearch.plugin.analysis.jieba.AnalysisJiebaPlugin;
 
 import java.io.File;
 
@@ -30,20 +31,17 @@ public class JiebaIndicesAnalysis extends AbstractComponent {
 	public JiebaIndicesAnalysis(Settings settings, IndicesAnalysisService indicesAnalysisService, Environment env) {
 		super(settings);
 
-		String type = settings.get("seg_mode", "index");
-		File configFile = env.configFile().toFile();
-		boolean stop = settings.getAsBoolean("stop", true);
-
 		indicesAnalysisService.analyzerProviderFactories().put(JIEBA_INDEX,
 				new PreBuiltAnalyzerProviderFactory(JIEBA_INDEX, AnalyzerScope.GLOBAL,
-						new JiebaAnalyzer(type, configFile, stop)));
+						new JiebaAnalyzer(settings)));
 
 		indicesAnalysisService.analyzerProviderFactories().put(JIEBA_SEARCH,
 				new PreBuiltAnalyzerProviderFactory(JIEBA_SEARCH, AnalyzerScope.GLOBAL,
-						new JiebaAnalyzer(type, configFile, stop)));
+						new JiebaAnalyzer(settings)));
 
 		indicesAnalysisService.analyzerProviderFactories().put(JIEBA_OTHER,
 				new PreBuiltAnalyzerProviderFactory(JIEBA_OTHER, AnalyzerScope.GLOBAL,
-						new JiebaAnalyzer(type, configFile, stop)));
+						new JiebaAnalyzer(settings)));
+
 	}
 }

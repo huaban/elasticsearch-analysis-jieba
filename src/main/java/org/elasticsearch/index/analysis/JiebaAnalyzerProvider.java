@@ -14,7 +14,7 @@ public class JiebaAnalyzerProvider extends
     @Inject
     public JiebaAnalyzerProvider(Index index, IndexSettingsService indexSettings, Environment env, @Assisted String name, @Assisted Settings settings) {
         super(index, indexSettings.getSettings(), name, settings);
-        analyzer = new JiebaAnalyzer(indexSettings, settings);
+        analyzer = new JiebaAnalyzer(settings);
     }
 
     @Override
