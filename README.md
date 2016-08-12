@@ -9,7 +9,7 @@
 | 0.0.2                         | 1.0.0RC2      | 0.0.2          |
 | 0.0.3-SNAPSHOT                | 1.3.0         | 1.0.0          |
 | 0.0.4                         | 1.5.x         | 1.0.2          |
-| 1.0.0                         | 2.3.3         | 1.0.2          |
+| 2.x                           | 2.x           | 1.0.2          |
 
 
 本插件包括 `jieba analyzer`、`jieba tokenizer`、`jieba token filter`，有三种模式供选择。
