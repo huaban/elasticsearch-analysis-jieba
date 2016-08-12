@@ -20,6 +20,8 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
 
 import com.huaban.analysis.jieba.WordDictionary;
+import org.elasticsearch.index.settings.IndexSettingsService;
+import org.elasticsearch.plugin.analysis.jieba.AnalysisJiebaPlugin;
 
 public class JiebaAnalyzer extends Analyzer {
 	private final ESLogger log = Loggers.getLogger(JiebaAnalyzer.class);
@@ -79,16 +81,8 @@ public class JiebaAnalyzer extends Analyzer {
 		}
 	}
 
-	public JiebaAnalyzer(Settings indexSettings, Settings settings) {
-		super();
-		type = settings.get("seg_mode", "index");
-		boolean stop = settings.getAsBoolean("stop", true);
-
-		Environment env = new Environment(indexSettings);
-		configFile = env.configFile();
-		this.stopWords = stop ? this.loadStopWords(configFile)
-				: CharArraySet.EMPTY_SET;
-		WordDictionary.getInstance().init(configFile.toPath());
+	public JiebaAnalyzer(Settings settings) {
+		this(settings.get("seg_mode", "index"), new File(new File(AnalysisJiebaPlugin.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent(), "config"), settings.getAsBoolean("stop", true));
 	}
 
 	public JiebaAnalyzer(String segMode, File configFile, boolean isStop) {
@@ -101,22 +95,22 @@ public class JiebaAnalyzer extends Analyzer {
 		this.stopWords = isStop ? this.loadStopWords(configFile)
 				: CharArraySet.EMPTY_SET;
 
+		this.log.info("Jieba segMode = {}", type);
 		this.log.info("JiebaAnalyzer isStop = {}", isStop);
 		this.log.info("JiebaAnalyzer stopWords = {}", this.stopWords.toString());
 	}
 
 	@Override
-	protected TokenStreamComponents createComponents(String fieldName,
-			Reader reader) {
+	protected TokenStreamComponents createComponents(String fieldName) {
 		Tokenizer tokenizer;
 		if (type.equals("other")) {
-			tokenizer = new OtherTokenizer(Version.LUCENE_CURRENT, reader);
+			tokenizer = new OtherTokenizer();
 		} else {
-			tokenizer = new SentenceTokenizer(reader);
+			tokenizer = new SentenceTokenizer();
 		}
 		TokenStream result = new JiebaTokenFilter(type, tokenizer);
 		if (!type.equals("other") && !stopWords.isEmpty()) {
-			result = new StopFilter(Version.LUCENE_CURRENT, result, stopWords);
+			result = new StopFilter(result, stopWords);
 		}
 		return new TokenStreamComponents(tokenizer, result);
 	}

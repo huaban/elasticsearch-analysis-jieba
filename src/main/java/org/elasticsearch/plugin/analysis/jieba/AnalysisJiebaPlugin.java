@@ -3,25 +3,31 @@ package org.elasticsearch.plugin.analysis.jieba;
 import org.elasticsearch.common.inject.Module;
 import org.elasticsearch.index.analysis.AnalysisModule;
 import org.elasticsearch.index.analysis.JiebaAnalysisBinderProcessor;
-import org.elasticsearch.plugins.AbstractPlugin;
+import org.elasticsearch.indices.analysis.JiebaIndicesAnalysisModule;
+import org.elasticsearch.plugins.Plugin;
 
-public class AnalysisJiebaPlugin extends AbstractPlugin {
+import java.util.Collection;
+import java.util.Collections;
 
-    @Override
-    public String name() {
-        return "analysis-jieba";
-    }
+public class AnalysisJiebaPlugin extends Plugin {
 
-    @Override
-    public String description() {
-        return "jieba analysis";
-    }
+	@Override
+	public String name() {
+		return "analysis-jieba";
+	}
 
-    @Override
-    public void processModule(Module module) {
-        if (module instanceof AnalysisModule) {
-            AnalysisModule analysisModule = (AnalysisModule) module;
-            analysisModule.addProcessor(new JiebaAnalysisBinderProcessor());
-        }
-    }
+	@Override
+	public String description() {
+		return "jieba analysis";
+	}
+
+	@Override
+	public Collection<Module> nodeModules() {
+		return Collections.<Module>singletonList(new JiebaIndicesAnalysisModule());
+	}
+
+
+	public void onModule(AnalysisModule module) {
+		module.addProcessor(new JiebaAnalysisBinderProcessor());
+	}
 }

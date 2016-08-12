@@ -3,12 +3,15 @@ Jieba Analysis for ElasticSearch
 
 The Jieba Analysis plugin integrates Lucene / Jieba Analyzer into elasticsearch, support customized dictionary.
 
+Based on [huaban/elasticsearch-analysis-jieba](https://github.com/huaban/elasticsearch-analysis-jieba), try to support ES 2.3.X.
+
 
 | Jieba Chinese Analysis Plugin | ElasticSearch | Analyzer       |
 |-------------------------------|---------------|----------------|
 | 0.0.2                         | 1.0.0RC2      | 0.0.2          |
 | 0.0.3-SNAPSHOT                | 1.3.0         | 1.0.0          |
 | 0.0.4                         | 1.5.x         | 1.0.2          |
+| 1.0.0                         | 2.3.3         | 1.0.2          |
 
 The plugin includes the `jieba` analyzer, `jieba` tokenizer, and `jieba` token filter, and have two mode you can choose. one is `index` which means it will be used when you want to index a document. another is `search` mode which used when you want to search something.
 
@@ -18,8 +21,6 @@ Installation
 **compile and package current project**
 
 ```
-git clone https://github.com/huaban/elasticsearch-analysis-jieba
-cd elasticsearch-analysis-jieba
 mvn package
 ```
 
@@ -30,70 +31,40 @@ cd {your_es_path}
 mkdir plugins/jieba
 ```
 
-**copy jieba-analysis-1.0.0.jar and elasticsearch-analysis-jieba-0.0.3-SNAPSHOT.jar to plugins/jieba**
+**unzip released zip file to plugins/jieba**
 
 ```
-cp ~/.m2/repository/com/huaban/jieba-analysis/1.0.0/jieba-analysis-1.0.0.jar {your_es_path}/plugins/jieba
-cd elasticsearch-analysis-jieba
-cp target/elasticsearch-analysis-jieba-0.0.3-SNAPSHOT.jar {your_es_path}/plugins/jieba
-```
-
-**copy user dict to config/jieba**
-
-```
-cp -r data/jieba {your_es_path}/config/
+unzip target/releases elasticsearch-analysis-jieba-1.0.0.zip -d {your_es_path}/plugins/jieba
 ```
 
 that's all!
 
-Changelog
----------
+Add Analysis Configuration (elasticsearch.yml)
+------------------------------------------------------
 
-Add other mode. This mode don't split word, just doing some string conversion, case or full/half word
-
-Usage
------
-
-create mapping
-
-```sh
-#!/bin/bash
-
-curl -XDELETE '0:9200/test/';echo
-
-curl -XPUT '0:9200/test/' -d '
-{
-    "index" : {
-        "number_of_shards": 1,
-        "number_of_replicas": 0,
-        "analysis" : {
-            "analyzer" : {
-                "jieba_search" : {
-                    "type" : "jieba",
-                    "seg_mode" : "search",
-                    "stop" : true
-                },
-                "jieba_other" : {
-                    "type" : "jieba",
-                    "seg_mode" : "other",
-                    "stop" : true
-                },
-                "jieba_index" : {
-                    "type" : "jieba",
-                    "seg_mode" : "index",
-                    "stop" : true
-                }
-            }
-        }
-    }
-}';echo
+```
+index :
+  analysis :
+    analyzer :
+      jieba_search :
+        type : jieba
+        seg_mode : search
+        stop : true
+      jieba_other :
+        type : jieba
+        seg_mode : other
+        stop : true
+      jieba_index :
+        type : jieba
+        seg_mode : index
+        stop : true
 ```
 
 test
 
 ```sh
 # index mode
-curl '0:9200/test/_analyze?analyzer=jieba_index' -d '中华人民共和国';echo
+curl 'http://localhost/test/_analyze?analyzer=jieba_index' -d '中华人民共和国';echo
 ```
 
 result

@@ -24,32 +24,20 @@ public class OtherTokenizer extends CharTokenizer {
 
     /**
      * Construct a new OtherTokenizer.
-     * 
-     * @param matchVersion
-     *            Lucene version to match See
-     *            {@link <a href="#version">above</a>}
-     * @param in
-     *            the input to split up into tokens
      */
-    public OtherTokenizer(Version matchVersion, Reader in) {
-        super(matchVersion, in);
+    public OtherTokenizer() {
+        super();
     }
 
     /**
      * Construct a new OtherTokenizer using a given
-     * {@link org.apache.lucene.util.AttributeSource.AttributeFactory}.
-     * 
-     * @param matchVersion
-     *            Lucene version to match See
-     *            {@link <a href="#version">above</a>}
+     * {@link org.apache.lucene.util.AttributeFactory}.
+     *
      * @param factory
      *            the attribute factory to use for this {@link Tokenizer}
-     * @param in
-     *            the input to split up into tokens
      */
-    public OtherTokenizer(Version matchVersion, AttributeFactory factory,
-            Reader in) {
-        super(matchVersion, factory, in);
+    public OtherTokenizer(AttributeFactory factory) {
+        super(factory);
     }
 
     /**
