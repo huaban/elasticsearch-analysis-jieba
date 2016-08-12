@@ -1,58 +1,58 @@
-Jieba Analysis for ElasticSearch
-================================
+结巴分词 ElasticSearch 插件
+===========================
 
-The Jieba Analysis plugin integrates Lucene / Jieba Analyzer into elasticsearch, support customized dictionary.
+集成 Lucene / Jieba Analyzer，支持自定义词典。
 
+| Jieba Chinese Analysis Plugin | ElasticSearch | Analyzer |
+|-------------------------------|---------------|----------|
+| 0.0.2                         | 1.0.0RC2      | 0.0.2    |
+| 0.0.3-SNAPSHOT                | 1.3.0         | 1.0.0    |
+| 0.0.4                         | 1.5.x         | 1.0.2    |
 
-| Jieba Chinese Analysis Plugin | ElasticSearch | Analyzer       |
-|-------------------------------|---------------|----------------|
-| 0.0.2                         | 1.0.0RC2      | 0.0.2          |
-| 0.0.3-SNAPSHOT                | 1.3.0         | 1.0.0          |
-| 0.0.4                         | 1.5.x         | 1.0.2          |
+本插件包括 `jieba analyzer`、`jieba tokenizer`、`jieba token filter`，有三种模式供选择。
 
-The plugin includes the `jieba` analyzer, `jieba` tokenizer, and `jieba` token filter, and have two mode you can choose. one is `index` which means it will be used when you want to index a document. another is `search` mode which used when you want to search something.
+-	index 主要用于索引分词，分词粒度较细
+-	search 主要用于查询分词，分词粒度较粗
+-	other 全角转半角、大写转小写、字符分词
 
-Installation
-------------
+安装
+----
 
-**compile and package current project**
+### 直接安装
 
-```
+### 编译安装
+
+```sh
 git clone https://github.com/huaban/elasticsearch-analysis-jieba
 cd elasticsearch-analysis-jieba
 mvn package
-```
 
-**make a direcotry in elasticsearch' plugin directory**
+# make a direcotry in elasticsearch' plugin directory**
 
-```
 cd {your_es_path}
 mkdir plugins/jieba
-```
 
-**copy jieba-analysis-1.0.0.jar and elasticsearch-analysis-jieba-0.0.3-SNAPSHOT.jar to plugins/jieba**
+# copy jieba-analysis-1.0.0.jar and elasticsearch-analysis-jieba-0.0.3-SNAPSHOT.jar to plugins/jieba
 
-```
-cp ~/.m2/repository/com/huaban/jieba-analysis/1.0.0/jieba-analysis-1.0.0.jar {your_es_path}/plugins/jieba
+cp ~/.m2/repository/com/huaban/jieba-analysis/1.0.2/jieba-analysis-1.0.2.jar {your_es_path}/plugins/jieba
 cd elasticsearch-analysis-jieba
-cp target/elasticsearch-analysis-jieba-0.0.3-SNAPSHOT.jar {your_es_path}/plugins/jieba
-```
+cp target/elasticsearch-analysis-jieba-0.0.4.jar {your_es_path}/plugins/jieba
 
-**copy user dict to config/jieba**
 
-```
+
+# 拷贝用户词典
+
 cp -r data/jieba {your_es_path}/config/
+
 ```
 
-that's all!
-
-Changelog
----------
+变更历史
+--------
 
 Add other mode. This mode don't split word, just doing some string conversion, case or full/half word
 
-Usage
------
+使用
+----
 
 create mapping
 
