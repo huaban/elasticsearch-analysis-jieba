@@ -10,9 +10,9 @@ import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.Index;
-import org.elasticsearch.index.settings.IndexSettings;
 
 import com.huaban.analysis.jieba.WordDictionary;
+import org.elasticsearch.index.settings.IndexSettingsService;
 
 public class JiebaTokenFilterFactory extends AbstractTokenFilterFactory {
 	private final ESLogger log = Loggers
@@ -22,12 +22,12 @@ public class JiebaTokenFilterFactory extends AbstractTokenFilterFactory {
 
 	@Inject
 	public JiebaTokenFilterFactory(Index index,
-			@IndexSettings Settings indexSettings, @Assisted String name,
-			@Assisted Settings settings) {
-		super(index, indexSettings, name, settings);
+								   IndexSettingsService indexSettings, @Assisted String name,
+								   @Assisted Settings settings) {
+		super(index, indexSettings.getSettings(), name, settings);
 		type = settings.get("seg_mode", "index");
-		Environment env = new Environment(indexSettings);
-		configFile = env.configFile();
+		Environment env = new Environment(indexSettings.getSettings());
+		configFile = env.configFile().toFile();
 		WordDictionary.getInstance().init(
 				new File(configFile, "jieba").toPath());
 	}

@@ -3,13 +3,17 @@
 
 集成 Lucene / Jieba Analyzer，支持自定义词典。
 
-| Jieba Chinese Analysis Plugin | ElasticSearch | Analyzer |
-|-------------------------------|---------------|----------|
-| 0.0.2                         | 1.0.0RC2      | 0.0.2    |
-| 0.0.3-SNAPSHOT                | 1.3.0         | 1.0.0    |
-| 0.0.4                         | 1.5.x         | 1.0.2    |
+
+| Jieba Chinese Analysis Plugin | ElasticSearch | Analyzer       |
+|-------------------------------|---------------|----------------|
+| 0.0.2                         | 1.0.0RC2      | 0.0.2          |
+| 0.0.3-SNAPSHOT                | 1.3.0         | 1.0.0          |
+| 0.0.4                         | 1.5.x         | 1.0.2          |
+| 1.0.0                         | 2.3.3         | 1.0.2          |
+
 
 本插件包括 `jieba analyzer`、`jieba tokenizer`、`jieba token filter`，有三种模式供选择。
+=======
 
 -	index 主要用于索引分词，分词粒度较细
 -	search 主要用于查询分词，分词粒度较粗
@@ -26,22 +30,19 @@
 git clone https://github.com/huaban/elasticsearch-analysis-jieba
 cd elasticsearch-analysis-jieba
 mvn package
+```
 
 # make a direcotry in elasticsearch' plugin directory**
 
 cd {your_es_path}
 mkdir plugins/jieba
 
-# copy jieba-analysis-1.0.0.jar and elasticsearch-analysis-jieba-0.0.3-SNAPSHOT.jar to plugins/jieba
-
-cp ~/.m2/repository/com/huaban/jieba-analysis/1.0.2/jieba-analysis-1.0.2.jar {your_es_path}/plugins/jieba
-cd elasticsearch-analysis-jieba
-cp target/elasticsearch-analysis-jieba-0.0.4.jar {your_es_path}/plugins/jieba
-
+# copy jieba-analysis-1.0.0.jar and elasticsearch-analysis-jieba-2.3.3.jar to plugins/jieba
 
 
 # 拷贝用户词典
 
+```
 cp -r data/jieba {your_es_path}/config/
 
 ```
@@ -54,46 +55,29 @@ Add other mode. This mode don't split word, just doing some string conversion, c
 使用
 ----
 
-create mapping
-
-```sh
-#!/bin/bash
-
-curl -XDELETE '0:9200/test/';echo
-
-curl -XPUT '0:9200/test/' -d '
-{
-    "index" : {
-        "number_of_shards": 1,
-        "number_of_replicas": 0,
-        "analysis" : {
-            "analyzer" : {
-                "jieba_search" : {
-                    "type" : "jieba",
-                    "seg_mode" : "search",
-                    "stop" : true
-                },
-                "jieba_other" : {
-                    "type" : "jieba",
-                    "seg_mode" : "other",
-                    "stop" : true
-                },
-                "jieba_index" : {
-                    "type" : "jieba",
-                    "seg_mode" : "index",
-                    "stop" : true
-                }
-            }
-        }
-    }
-}';echo
+```
+index :
+  analysis :
+    analyzer :
+      jieba_search :
+        type : jieba
+        seg_mode : search
+        stop : true
+      jieba_other :
+        type : jieba
+        seg_mode : other
+        stop : true
+      jieba_index :
+        type : jieba
+        seg_mode : index
+        stop : true
 ```
 
 test
 
 ```sh
 # index mode
-curl '0:9200/test/_analyze?analyzer=jieba_index' -d '中华人民共和国';echo
+curl 'http://localhost/test/_analyze?analyzer=jieba_index' -d '中华人民共和国';echo
 ```
 
 result
