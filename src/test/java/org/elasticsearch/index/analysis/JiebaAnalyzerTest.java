@@ -104,7 +104,7 @@ public class JiebaAnalyzerTest {
 
     @Test
     public void testSegModeOther() throws IOException {
-        JiebaAnalyzer analyzer = new JiebaAnalyzer("index", new File(System.getProperty("basedir"), "data"), true);
+        JiebaAnalyzer analyzer = new JiebaAnalyzer("index", new File(System.getProperty("basedir"), "config"), true);
 
         for (String sentence : sentences) {
             TokenStream tokenStream = analyzer.tokenStream(null,
