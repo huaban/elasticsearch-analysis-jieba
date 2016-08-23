@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.elasticsearch</groupId>
 	<artifactId>elasticsearch-analysis-jieba</artifactId>
-	<version>2.x</version>
+	<version>2.3.3</version>
 	<packaging>jar</packaging>
 	<name>elasticsearch-analysis-jieba</name>
 	<url>http://maven.apache.org</url>

@@ -6,9 +6,19 @@
 	</formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<fileSets>
-		<fileSet>
-			<directory>${project.basedir}/config</directory>
-			<outputDirectory>/config</outputDirectory>
+		<fileSet>  
+            <directory>${project.basedir}/src/main/dic</directory>  
+            <outputDirectory>/dic</outputDirectory>  
+        </fileSet>
+
+        <fileSet>
+            <directory>${project.basedir}/src/main/plugin-metadata</directory>
+            <outputDirectory>/</outputDirectory>
+        </fileSet>
+        
+        <fileSet>
+			<directory>${project.basedir}/_site/</directory>
+			<outputDirectory>_site/</outputDirectory>
 		</fileSet>
 	</fileSets>
 	<files>
@@ -25,6 +35,8 @@
 			<useTransitiveFiltering>true</useTransitiveFiltering>
 			<excludes>
 				<exclude>org.elasticsearch:elasticsearch</exclude>
+				<exclude>org.apache.lucene:lucene*</exclude>
+				<exclude>commons-lang*</exclude>
 			</excludes>
 		</dependencySet>
 		<dependencySet>

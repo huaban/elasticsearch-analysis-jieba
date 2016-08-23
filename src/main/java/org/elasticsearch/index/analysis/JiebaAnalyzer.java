@@ -1,10 +1,9 @@
 package org.elasticsearch.index.analysis;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
@@ -13,15 +12,12 @@ import org.apache.lucene.analysis.core.StopFilter;
 import org.apache.lucene.analysis.util.CharArraySet;
 import org.apache.lucene.analysis.util.WordlistLoader;
 import org.apache.lucene.util.IOUtils;
-import org.apache.lucene.util.Version;
 import org.elasticsearch.common.logging.ESLogger;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
 
 import com.huaban.analysis.jieba.WordDictionary;
-import org.elasticsearch.index.settings.IndexSettingsService;
-import org.elasticsearch.plugin.analysis.jieba.AnalysisJiebaPlugin;
 
 public class JiebaAnalyzer extends Analyzer {
 	private final ESLogger log = Loggers.getLogger(JiebaAnalyzer.class);
@@ -68,31 +64,28 @@ public class JiebaAnalyzer extends Analyzer {
 		}
 	}
 
-	private File configFile;
 	private String type;
 
-	private CharArraySet loadStopWords(File configFile) {
+	private CharArraySet loadStopWords(Path dataPath) {
 		try {
 			return CharArraySet.unmodifiableSet(WordlistLoader.getWordSet(
-					new FileReader(new File(new File(configFile, "jieba"),
-							"stopwords.txt")), STOPWORD_FILE_COMMENT));
+					new FileReader(dataPath.resolve("stopwords.txt").toFile()), STOPWORD_FILE_COMMENT));
 		} catch (IOException e) {
 			return DefaultSetHolder.DEFAULT_STOP_SET;
 		}
 	}
 
-	public JiebaAnalyzer(Settings settings) {
-		this(settings.get("seg_mode", "index"), new File(new File(AnalysisJiebaPlugin.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent(), "config"), settings.getAsBoolean("stop", true));
+	public JiebaAnalyzer(Settings settings, Environment env) {
+		this(settings.get("seg_mode", "index"), env.pluginsFile().resolve("jieba/dic"),
+				settings.getAsBoolean("stop", true));
 	}
 
-	public JiebaAnalyzer(String segMode, File configFile, boolean isStop) {
+	public JiebaAnalyzer(String segMode, Path dataPath, boolean isStop) {
 		super();
 
 		this.type = segMode;
-		this.configFile = configFile;
-		WordDictionary.getInstance().init(
-				new File(configFile, "jieba").toPath());
-		this.stopWords = isStop ? this.loadStopWords(configFile)
+		WordDictionary.getInstance().init(dataPath);
+		this.stopWords = isStop ? this.loadStopWords(dataPath)
 				: CharArraySet.EMPTY_SET;
 
 		this.log.info("Jieba segMode = {}", type);

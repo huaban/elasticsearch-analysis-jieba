@@ -1,6 +1,5 @@
 package org.elasticsearch.index.analysis;
 
-import java.io.Reader;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.util.CharTokenizer;

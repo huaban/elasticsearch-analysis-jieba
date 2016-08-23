@@ -9,7 +9,7 @@
 | 0.0.2                         | 1.0.0RC2      | 0.0.2          |
 | 0.0.3-SNAPSHOT                | 1.3.0         | 1.0.0          |
 | 0.0.4                         | 1.5.x         | 1.0.2          |
-| 2.x                           | 2.x           | 1.0.2          |
+| 2.3.3                         | 2.3.3         | 1.0.2          |
 
 
 本插件包括 `jieba analyzer`、`jieba tokenizer`、`jieba token filter`，有三种模式供选择。
@@ -22,156 +22,52 @@
 安装
 ----
 
-### 直接安装
+## ES 2.x 以上版本
 
-### 编译安装
+> 插件版本跟 ES 版本保持一致
+
+## ES 2.x 以下版本
+
+> 请使用插件 0.0.4 版本编译安装
 
 ```sh
-git clone https://github.com/huaban/elasticsearch-analysis-jieba
-cd elasticsearch-analysis-jieba
-mvn package
-```
-
-# make a direcotry in elasticsearch' plugin directory**
-
 cd {your_es_path}
 mkdir plugins/jieba
 
-# copy jieba-analysis-1.0.0.jar and elasticsearch-analysis-jieba-2.3.3.jar to plugins/jieba
+# 拷贝 jar
+copy jieba-analysis-1.0.2.jar and elasticsearch-analysis-jieba-0.0.4.jar to plugins/jieba
 
-
-# 拷贝用户词典
-
-```
+# 拷贝用户字典
 cp -r data/jieba {your_es_path}/config/
-
 ```
 
-变更历史
---------
-
-Add other mode. This mode don't split word, just doing some string conversion, case or full/half word
-
-使用
+测试
 ----
 
-```
-index :
-  analysis :
-    analyzer :
-      jieba_search :
-        type : jieba
-        seg_mode : search
-        stop : true
-      jieba_other :
-        type : jieba
-        seg_mode : other
-        stop : true
-      jieba_index :
-        type : jieba
-        seg_mode : index
-        stop : true
-```
-
-test
-
 ```sh
-# index mode
-curl 'http://localhost/test/_analyze?analyzer=jieba_index' -d '中华人民共和国';echo
-```
+curl -XPUT 127.0.0.1:9200/test -d '{
+    "settings" : {
+        "number_of_shards" : 1,
+        "number_of_replicas" : 0
 
-result
-
-```javascript
-{
-    "tokens": [
-        {
-            "token": "中华",
-            "start_offset": 0,
-            "end_offset": 2,
-            "type": "word",
-            "position": 1
-        },
-        {
-            "token": "华人",
-            "start_offset": 1,
-            "end_offset": 3,
-            "type": "word",
-            "position": 2
-        },
-        {
-            "token": "人民",
-            "start_offset": 2,
-            "end_offset": 4,
-            "type": "word",
-            "position": 3
-        },
-        {
-            "token": "共和",
-            "start_offset": 4,
-            "end_offset": 6,
-            "type": "word",
-            "position": 4
-        },
-        {
-            "token": "共和国",
-            "start_offset": 4,
-            "end_offset": 7,
-            "type": "word",
-            "position": 5
-        },
-        {
-            "token": "中华人民共和国",
-            "start_offset": 0,
-            "end_offset": 7,
-            "type": "word",
-            "position": 6
+    },
+    "mappings" : {
+        "test" : {
+            "_all" : { "enabled" : false },
+            "properties" : {
+                "name" : { "type" : "string", "analyzer" : "jieba_index", "search_analyzer" : "jieba_search" }
+            }
         }
-    ]
-}
+    }
+}';echo
+
+
+
+curl 'http://127.0.0.1:9200/test/_analyze?analyzer=jieba_index' -d '中华人民共和国';echo
+curl 'http://127.0.0.1:9200/test/_analyze?analyzer=jieba_search' -d '中华人民共和国';echo
+curl 'http://127.0.0.1:9200/test/_analyze?analyzer=jieba_other' -d '中华人民共和国 HelLo';echo
 ```
 
-```sh
-# search mode
-curl '0:9200/test/_analyze?analyzer=jieba_search' -d '中华人民共和国';echo
-```
-
-result
-
-```javascript
-{
-    "tokens": [
-        {
-            "token": "中华人民共和国",
-            "start_offset": 0,
-            "end_offset": 7,
-            "type": "word",
-            "position": 1
-        }
-    ]
-}
-```
-
-```sh
-# other mode 大小写全半角
-curl '0:9200/test/_analyze?analyzer=jieba_other' -d '中华人民共和国 HeLlo';echo
-```
-
-result
-
-```javascript
-{
-    "tokens": [
-        {
-            "token": "中华人民共和国 hello",
-            "start_offset": 0,
-            "end_offset": 13,
-            "type": "word",
-            "position": 1
-        }
-    ]
-}
-```
 
 License
 -------
