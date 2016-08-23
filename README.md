@@ -10,10 +10,10 @@
 | 0.0.3-SNAPSHOT                | 1.3.0         | 1.0.0          |
 | 0.0.4                         | 1.5.x         | 1.0.2          |
 | 2.3.3                         | 2.3.3         | 1.0.2          |
+| 2.3.4                         | 2.3.4         | 1.0.2          |
 
 
-本插件包括 `jieba analyzer`、`jieba tokenizer`、`jieba token filter`，有三种模式供选择。
-=======
+> 本插件包括 `jieba analyzer`、`jieba tokenizer`、`jieba token filter`，有三种模式供选择。
 
 -	index 主要用于索引分词，分词粒度较细
 -	search 主要用于查询分词，分词粒度较粗
@@ -81,17 +81,17 @@ curl 'http://127.0.0.1:9200/test/_analyze?analyzer=jieba_other' -d '中华人民
 github-release release \
     --user huaban \
     --repo elasticsearch-analysis-jieba \
-    --tag v2.3.3 \
-    --name "v2.3.3" \
-    --description "支持 ES v2.3.3" \
-    --pre-release
+    --tag v2.3.4 \
+    --name "v2.3.4" \
+    --description "支持 ES v2.3.4"
+
 github-release upload \
     --user huaban \
     --repo elasticsearch-analysis-jieba \
-    --tag v2.3.3 \
-    --name "v2.3.3" \
-    --label "ES2.3.3" \
-    --file target/releases/elasticsearch-analysis-jieba-2.3.3-bin.zip
+    --tag v2.3.4 \
+    --name "v2.3.4" \
+    --label "ES2.3.4" \
+    --file target/releases/elasticsearch-analysis-jieba-2.3.4-bin.zip
 ```
 
 License
