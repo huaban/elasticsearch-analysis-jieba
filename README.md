@@ -26,6 +26,11 @@
 
 > 插件版本跟 ES 版本保持一致
 
+**2.3.3**
+```sh
+./bin/plugin install https://github.com/huaban/elasticsearch-analysis-jieba/releases/download/v2.3.3/elasticsearch-analysis-jieba-2.3.3-bin.zip
+```
+
 ## ES 2.x 以下版本
 
 > 请使用插件 0.0.4 版本编译安装
@@ -68,6 +73,26 @@ curl 'http://127.0.0.1:9200/test/_analyze?analyzer=jieba_search' -d '中华人�
 curl 'http://127.0.0.1:9200/test/_analyze?analyzer=jieba_other' -d '中华人民共和国 HelLo';echo
 ```
 
+如何发布一个版本
+------
+
+
+```
+github-release release \
+    --user huaban \
+    --repo elasticsearch-analysis-jieba \
+    --tag v2.3.3 \
+    --name "v2.3.3" \
+    --description "支持 ES v2.3.3" \
+    --pre-release
+github-release upload \
+    --user huaban \
+    --repo elasticsearch-analysis-jieba \
+    --tag v2.3.3 \
+    --name "v2.3.3" \
+    --label "ES2.3.3" \
+    --file target/releases/elasticsearch-analysis-jieba-2.3.3-bin.zip
+```
 
 License
 -------
