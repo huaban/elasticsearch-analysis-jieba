@@ -12,6 +12,7 @@
 | 2.3.3                         | 2.3.3         | 1.0.2          |
 | 2.3.4                         | 2.3.4         | 1.0.2          |
 | 2.3.5                         | 2.3.5         | 1.0.2          |
+| 2.4.1                         | 2.4.1         | 1.0.2          |
 
 
 > 本插件包括 `jieba analyzer`、`jieba tokenizer`、`jieba token filter`，有三种模式供选择。
@@ -26,6 +27,11 @@
 ## ES 2.x 以上版本
 
 > 插件版本跟 ES 版本保持一致
+
+**2.4.1**
+```sh
+./bin/plugin install https://github.com/windoze/elasticsearch-analysis-jieba/releases/download/v2.4.1/elasticsearch-analysis-jieba-2.4.1-bin.zip
+```
 
 **2.3.5**
 ```sh
@@ -92,17 +98,17 @@ curl 'http://127.0.0.1:9200/test/_analyze?analyzer=jieba_other' -d '中华人民
 github-release release \
     --user huaban \
     --repo elasticsearch-analysis-jieba \
-    --tag v2.3.5 \
-    --name "v2.3.5" \
-    --description "支持 ES v2.3.5"
+    --tag v2.4.1 \
+    --name "v2.4.1" \
+    --description "支持 ES v2.4.1"
 
 github-release upload \
     --user huaban \
     --repo elasticsearch-analysis-jieba \
-    --tag v2.3.5 \
-    --name "elasticsearch-analysis-jieba-2.3.5-bin.zip" \
+    --tag v2.4.1 \
+    --name "elasticsearch-analysis-jieba-2.4.1-bin.zip" \
     --label "plugin.zip" \
-    --file target/releases/elasticsearch-analysis-jieba-2.3.5-bin.zip
+    --file target/releases/elasticsearch-analysis-jieba-2.4.1-bin.zip
 ```
 
 
